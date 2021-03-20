@@ -1,5 +1,24 @@
-<form action="/hangar">
+<form action="">
     <input type="text" name="clase_hangar" placeholder="Clase de hangar" required>
     <input type="number" name="capacidad" placeholder="Capadidad" required>
     <button type="submit">Enviar</button>
+    <a href="/">Volver</a>
 </form>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <td>Numero de hangar</td>
+                <td>Capacidad</td>
+            </tr>
+        </thead>
+        <body>
+            {% for row in table %}
+            <tr>
+                <td>{{row.0}}</td>
+                <td>{{row.1}}</td>
+            </tr>
+            {% endfor %}
+        </body>
+    </table>
+</div>

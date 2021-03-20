@@ -1,6 +1,7 @@
 <form action="">
-    <input type="text" name="nss" placeholder="NSS">
-    <input type="text" name="nombre" placeholder="Nombre">
+    <input type="text" name="nombre_corporacion" placeholder="Nombre" required>
+    <input type="text" name="direccion" placeholder="Direccion" required>
+    <input type="text" name="telefono" placeholder="Telefono" required>
     <button type="submit">Enviar</button>
     <a href="/">Volver</a>
 </form>
@@ -8,8 +9,6 @@
     <table>
         <thead>
             <tr>
-                <td>Id</td>
-                <td>NSS</td>
                 <td>Nombre</td>
                 <td>Direccion</td>
                 <td>Telefono</td>
@@ -21,8 +20,6 @@
                 <td>{{row.0}}</td>
                 <td>{{row.1}}</td>
                 <td>{{row.2}}</td>
-                <td>{{row.3}}</td>
-                <td>{{row.4}}</td>
             </tr>
             {% endfor %}
         </body>
