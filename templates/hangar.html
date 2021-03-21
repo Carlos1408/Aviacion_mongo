@@ -1,6 +1,6 @@
-<form action="">
-    <input type="text" name="clase_hangar" placeholder="Clase de hangar" required>
-    <input type="number" name="capacidad" placeholder="Capadidad" required>
+<form action="{{ url_for('add_hangar') }}" method="POST">
+    <input type="number" name="num_hangar" placeholder="Numero de hangar" required>
+    <input type="number" name="capacidad" min="1" placeholder="Capadidad" required>
     <button type="submit">Enviar</button>
     <a href="/">Volver</a>
 </form>
