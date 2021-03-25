@@ -1,28 +1,51 @@
 {% extends 'layout.html' %}
 {% block body %}
-<form action="{{ url_for('add_persona') }}" method="POST">
-    <input type="text" name="nss" placeholder="NSS" required>
-    <input type="text" name="nombre" placeholder="Nombre" required>
-    <input type="number" min="1" name="telefono" placeholder="Telefono" required>
-    <button type="submit">Insertar</button>
-    <a href="/">Volver</a>
-</form>
-<form action="{{ url_for('form_update_persona') }}" method="POST">
-    <input type="number" name="id_update" min="1" placeholder="Id" required>
-    <button type="submit">Buscar registro</button>
-</form>
-<div>
-    <table>
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>NSS</td>
-                <td>Nombre</td>
-                <td>Telefono</td>
-            </tr>
-        </thead>
-        {% block body_table %}
-        {% endblock %}
-    </table>
+<div class="row">
+    <div class="col-md-5">
+        <h1>Personas</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="card card-body">
+            <form action="{{ url_for('add_persona') }}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="nss" placeholder="NSS" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="nombre" placeholder="Nombre" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="number" min="1" name="telefono" placeholder="Telefono" required class="form-control">
+                </div>
+                <div class="btn-group btn-block">
+                    <button type="submit" class="btn btn-primary">Insertar</button>
+                    <a href="/" class="btn btn-danger">Volver</a>
+                </div>
+            </form>
+        </div>
+        <div class="card card-body">
+            <form action="{{ url_for('form_update_persona') }}" method="POST">
+                <div class="form-group">
+                    <input type="number" name="id_update" min="1" placeholder="Id" required class="form-control">
+                </div>
+                <button type="submit" class="btn btn-info btn-block">Buscar registro</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <table class="table table-striped table-bordered bg-gray table-sm">
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>NSS</td>
+                    <td>Nombre</td>
+                    <td>Telefono</td>
+                </tr>
+            </thead>
+            {% block body_table %}
+            {% endblock %}
+        </table>
+    </div>
 </div>
 {% endblock %}

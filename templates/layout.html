@@ -6,9 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Carlos Claure Vargas">
     <title>App postgres</title>
+    <link rel="stylesheet" href="../static/bootstrap/bootstrap.min.css">
 </head>
 <body>
-    {% block body %}
-    {% endblock %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" aria-disabled="True">Academia de vuelo</a>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+              <a class="nav-link" href="/hangar">Hangares</a>
+              <a class="nav-link" href="/persona">Persona</a>
+              <a class="nav-link" href="/corporacion">Corporacion</a>
+              <a class="nav-link" href="/tipo-avion">Tipo avion</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    <div class="container pt-4">
+        {% block body %}
+        {% endblock %}
+    </div>
 </body>
 </html>
