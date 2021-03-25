@@ -30,6 +30,7 @@ def tipo_avion():
     data = select_all("tipo_avion order by id")
     return render_template('body_data_table.html', table = data, direction = "tipo_avion.html")
 
+# INSERT CLASE_HANGAR
 @app.route("/add-hangar", methods = ['POST'])
 def add_hangar():
     num_hangar = request.form['num_hangar']
@@ -39,6 +40,7 @@ def add_hangar():
     execute_query(query)
     return redirect(url_for("hangares"))
 
+#INSERT PERSONA
 @app.route("/add-persona", methods = ['POST'])
 def add_persona():
     nss = request.form['nss']
@@ -49,6 +51,7 @@ def add_persona():
     execute_query(query)
     return redirect(url_for("personas"))
 
+#INSERT CORPORACION
 @app.route("/add-corporacion", methods = ['POST'])
 def add_corporacion():
     nombre = request.form['nombre_corporacion']
@@ -59,6 +62,7 @@ def add_corporacion():
     execute_query(query)
     return redirect(url_for("corporacion"))
 
+#INSERT TIPO_AVION
 @app.route("/add-tipo-avion", methods = ['POST'])
 def add_tipo_avion():
     modelo = request.form['modelo']
@@ -130,6 +134,15 @@ def update_tipo_avion(id):
     execute_query(query)
     return redirect(url_for("tipo_avion"))
 
+# DELETE ROW
+@app.route('/delete_row/<table>/<field>/<data>/<url>')
+def delete_row(table, field, data, url):
+    print("campo: ", field)
+    print("tabla: ", table)
+    print("dato: ", data)
+    delete_row(table, f"{field} = '{data}'")
+    return redirect(url_for(url))
+
 def select_all(table):
     cursor = conexion.cursor()
     query = f"select * from {table}"
@@ -154,6 +167,13 @@ def execute_query(query):
 
 def update_table(query):
     cursor = conexion.cursor()
+    cursor.execute(query)
+    conexion.commit()
+    cursor.close()
+
+def delete_row(table, condition):
+    cursor = conexion.cursor()
+    query = f"delete from {table} where {condition}"
     cursor.execute(query)
     conexion.commit()
     cursor.close()
