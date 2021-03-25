@@ -69,7 +69,7 @@ def add_tipo_avion():
     capacidad = request.form['capacidad']
     peso = request.form['peso_avion']
     query = f"""insert into tipo_avion(modelo, capacidad, peso_avion)
-                values('{modelo}'', {capacidad}, {peso})"""
+                values('{modelo}', {capacidad}, {peso})"""
     execute_query(query)
     return redirect(url_for('tipo_avion'))
 

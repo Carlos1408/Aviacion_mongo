@@ -1,8 +1,10 @@
+{% extends 'layout.html' %}
+{% block body %}
 <form action="{{ url_for('add_persona') }}" method="POST">
     <input type="text" name="nss" placeholder="NSS" required>
     <input type="text" name="nombre" placeholder="Nombre" required>
     <input type="number" min="1" name="telefono" placeholder="Telefono" required>
-    <button type="submit">Enviar</button>
+    <button type="submit">Insertar</button>
     <a href="/">Volver</a>
 </form>
 <form action="{{ url_for('form_update_persona') }}" method="POST">
@@ -23,3 +25,4 @@
         {% endblock %}
     </table>
 </div>
+{% endblock %}

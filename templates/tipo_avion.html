@@ -1,8 +1,10 @@
+{% extends 'layout.html' %}
+{% block body %}
 <form action="{{ url_for('add_tipo_avion') }}" method="POST">
     <input type="text" name="modelo" placeholder="Modelo" required>
     <input type="number" name="capadidad" min="1" placeholder="Capacidad" required>
     <input type="number" name="peso" min="1" placeholder="Peso de avion" required>
-    <button type="submit">Enviar</button>
+    <button type="submit">Insertar</button>
     <a href="/">Volver</a>
 </form>
 <form action="{{ url_for('form_update_tipo_avion') }}" method="POST">
@@ -23,3 +25,4 @@
         {% endblock %}
     </table>
 </div>
+{% endblock %}

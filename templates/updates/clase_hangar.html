@@ -1,3 +1,5 @@
+{% extends 'layout.html' %}
+{% block body %}
 <form action="/update-clase-hangar/{{table.0.0}}" method="POST">
     <input type="number" name="capacidad" min="1" placeholder="Capadidad" value={{table.0.1}} required>
     <button>Actualizar</button>
@@ -19,3 +21,4 @@
         </thead>
     </table>
 </div>
+{% endblock %}
