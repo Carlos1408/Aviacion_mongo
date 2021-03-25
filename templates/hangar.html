@@ -1,5 +1,5 @@
 <form action="{{ url_for('add_hangar') }}" method="POST">
-    <input type="number" name="num_hangar" placeholder="Numero de hangar" required>
+    <input type="number" name="num_hangar" min="1" placeholder="Numero de hangar" required>
     <input type="number" name="capacidad" min="1" placeholder="Capadidad" required>
     <button type="submit">Enviar</button>
     <a href="/">Volver</a>
@@ -15,8 +15,9 @@
         <body>
             {% for row in table %}
             <tr>
-                <td>{{row.0}}</td>
-                <td>{{row.1}}</td>
+                {% for cell in row %}
+                <td>{{cell}}</td>
+                {% endfor %}
             </tr>
             {% endfor %}
         </body>

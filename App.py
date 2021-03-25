@@ -36,6 +36,15 @@ def corporacion():
     cursor.close()
     return render_template('corporacion.html', table = data)
 
+@app.route('/tipo-avion')
+def tipo_avion():
+    cursor = conexion.cursor()
+    query = "select * from tipo_avion"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    cursor.close()
+    return render_template('tipo_avion.html', table = data)
+
 @app.route("/add-hangar", methods = ['POST'])
 def add_hangar():
     num_hangar = request.form['num_hangar']
@@ -44,6 +53,7 @@ def add_hangar():
                 values({num_hangar}, {capacidad})"""
     cursor = conexion.cursor()
     cursor.execute(query)
+    conexion.commit()
     cursor.close()
     return redirect(url_for("hangares"))
 
@@ -56,6 +66,7 @@ def add_persona():
                 values({nss}, '{nombre}', {telefono})"""
     cursor = conexion.cursor()
     cursor.execute(query)
+    conexion.commit()
     cursor.close()
     return redirect(url_for("personas"))
 
@@ -68,9 +79,23 @@ def add_corporacion():
                 values('{nombre}', '{direccion}', {telefono})"""
     cursor = conexion.cursor()
     cursor.execute(query)
+    conexion.commit()
     cursor.close()
 
     return redirect(url_for("corporacion"))
+
+@app.route("/add-tipo-avion", methods = ['POST'])
+def add_tipo_avion():
+    modelo = request.form('modelo')
+    capacidad = request.form('capacidad')
+    peso = request.form('peso_avion')
+    query = f"""insert into tipo_avion(modelo, capacidad, peso_avion)
+                values('{modelo}'', {capacidad}, {peso})"""
+    cursor = conexion.cursor()
+    cursor.execute(query)
+    conexion.commit()
+    cursor.close()
+    return redirect(url_for('tipo_avion'))
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)

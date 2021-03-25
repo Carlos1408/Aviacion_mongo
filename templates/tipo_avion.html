@@ -1,7 +1,7 @@
-<form action="{{ url_for('add_persona') }}" method="POST">
-    <input type="text" name="nss" placeholder="NSS" required>
-    <input type="text" name="nombre" placeholder="Nombre" required>
-    <input type="number" min="1" name="telefono" placeholder="Telefono" required>
+<form action="{{ url_for('add_tipo_avion') }}" method="POST">
+    <input type="text" name="modelo" placeholder="Modelo" required>
+    <input type="number" name="capadidad" min="1" placeholder="Capacidad" required>
+    <input type="number" name="peso" min="1" placeholder="Peso de avion" required>
     <button type="submit">Enviar</button>
     <a href="/">Volver</a>
 </form>
@@ -10,9 +10,9 @@
         <thead>
             <tr>
                 <td>Id</td>
-                <td>NSS</td>
-                <td>Nombre</td>
-                <td>Telefono</td>
+                <td>Modelo</td>
+                <td>Capacidad</td>
+                <td>Peso avion</td>
             </tr>
         </thead>
         <body>
