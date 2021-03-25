@@ -2,8 +2,12 @@
     <input type="text" name="nombre_corporacion" placeholder="Nombre" required>
     <input type="text" name="direccion" placeholder="Direccion" required>
     <input type="number" name="telefono" min="1" placeholder="Telefono" required>
-    <button type="submit">Enviar</button>
+    <button type="submit">Insertar</button>
     <a href="/">Volver</a>
+</form>
+<form action="{{ url_for('form_update_corporacion') }}" method="POST">
+    <input type="text" name="nombre_update" placeholder="Nombre" required>
+    <button type="submit">Actualizar</button>
 </form>
 <div>
     <table>
@@ -14,14 +18,7 @@
                 <td>Telefono</td>
             </tr>
         </thead>
-        <body>
-            {% for row in table %}
-            <tr>
-                {% for cell in row %}
-                <td>{{cell}}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </body>
+        {% block body_table %}
+        {% endblock %}
     </table>
 </div>

@@ -1,8 +1,12 @@
 <form action="{{ url_for('add_hangar') }}" method="POST">
     <input type="number" name="num_hangar" min="1" placeholder="Numero de hangar" required>
     <input type="number" name="capacidad" min="1" placeholder="Capadidad" required>
-    <button type="submit">Enviar</button>
+    <button type="submit">Insertar</button>
     <a href="/">Volver</a>
+</form>
+<form action="{{ url_for('form_update_clase_hangar') }}" method="POST">
+    <input type="number" name="num_hangar_update" min="1" placeholder="Numero de hangar" required>
+    <button type="submit">Actualizar</button>
 </form>
 <div>
     <table>
@@ -12,14 +16,7 @@
                 <td>Capacidad</td>
             </tr>
         </thead>
-        <body>
-            {% for row in table %}
-            <tr>
-                {% for cell in row %}
-                <td>{{cell}}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </body>
+        {% block body_table %}
+        {% endblock %}
     </table>
 </div>

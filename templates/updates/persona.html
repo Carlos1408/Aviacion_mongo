@@ -1,0 +1,21 @@
+<form action="/update-persona/{{table.0.0}}" method="POST">
+    <input type="text" name="nss" placeholder="NSS" value={{table.0.1}} required>
+    <input type="text" name="nombre" placeholder="Nombre" value={{table.0.2}} required>
+    <input type="number" min="1" name="telefono" placeholder="Telefono" value={{table.0.3}} required>
+    <button>Actualizar</button>
+    <a href="/persona">Volver</a>
+</form>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>NSS</td>
+                <td>Nombre</td>
+                <td>Telefono</td>
+            </tr>
+        </thead>
+        {% block body_table %}
+        {% endblock %}
+    </table>
+</div>

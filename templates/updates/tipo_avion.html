@@ -1,0 +1,22 @@
+<form action="/update-tipo-avion/{{table.0.3}}" method="POST">
+    <input type="text" name="modelo" placeholder="Modelo" value={{table.0.0}} required>
+    <input type="number" name="capacidad" min="1" placeholder="Capacidad" value={{table.0.1}} required>
+    <input type="number" name="peso" min="1" placeholder="Peso de avion" value={{table.0.2}} required>
+    <button>Actualizar</button>
+    <a href="/tipo-avion">Volver</a>
+</form>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <td>Modelo</td>
+                <td>Capacidad</td>
+                <td>Peso avion</td>
+                <td>Id</td>
+            </tr>
+        </thead>
+        {% block body_table %}
+        {% endblock %}
+        </thead>
+    </table>
+</div>

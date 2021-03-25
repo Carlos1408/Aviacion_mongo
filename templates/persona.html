@@ -5,6 +5,10 @@
     <button type="submit">Enviar</button>
     <a href="/">Volver</a>
 </form>
+<form action="{{ url_for('form_update_persona') }}" method="POST">
+    <input type="number" name="id_update" min="1" placeholder="Id" required>
+    <button type="submit">Actualizar</button>
+</form>
 <div>
     <table>
         <thead>
@@ -15,14 +19,7 @@
                 <td>Telefono</td>
             </tr>
         </thead>
-        <body>
-            {% for row in table %}
-            <tr>
-                {% for cell in row %}
-                <td>{{cell}}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </body>
+        {% block body_table %}
+        {% endblock %}
     </table>
 </div>
