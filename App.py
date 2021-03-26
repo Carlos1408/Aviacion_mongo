@@ -2,7 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from copy import deepcopy
 import psycopg2
 
-conexion = psycopg2.connect(host = "tuffi.db.elephantsql.com", database = "ewayqilc", user = "ewayqilc", password = "c_3fHeJM-wn6440Q4ZU0F9hf7dyDu9ba")
+conexion = psycopg2.connect(host = "localhost", 
+                            database = "aviacion",
+                            user = "api_first_admin",
+                            password = "equipo-rojo/proyecto-primer-parcial")
 
 app = Flask(__name__)
 
@@ -12,32 +15,35 @@ def index():
 
 @app.route('/hangar/')
 def hangares():
-    data = select_all("clase_hangar")
+    data = select_all("eq.clase_hangar order by num_hangar")
     return render_template('body_data_table.html', table = data, direction = "hangar.html")
 
 @app.route('/persona')
 def personas():
-    data = select_all("persona order by id")
+    data = select_all("per.persona order by id")
     return render_template('body_data_table.html', table = data, direction = "persona.html")
 
 @app.route('/corporacion')
 def corporacion():
-    data = select_all("corporacion")
+    data = select_all("prop.corporacion")
     return render_template('body_data_table.html', table = data, direction = "corporacion.html")
 
 @app.route('/tipo-avion')
 def tipo_avion():
-    data = select_all("tipo_avion order by id")
+    data = select_all("eq.tipo_avion order by id")
     return render_template('body_data_table.html', table = data, direction = "tipo_avion.html")
 
 # INSERT CLASE_HANGAR
 @app.route("/add-hangar", methods = ['POST'])
 def add_hangar():
+    
     num_hangar = request.form['num_hangar']
     capacidad = request.form['capacidad']
-    query = f"""insert into clase_hangar
-                values({num_hangar}, {capacidad})"""
-    execute_query(query)
+    reg = select_row("eq.clase_hangar", f"num_hangar = {num_hangar}")
+    if len(reg) == 0:
+        query = f"""insert into eq.clase_hangar
+                    values({num_hangar}, {capacidad})"""
+        execute_query(query)
     return redirect(url_for("hangares"))
 
 #INSERT PERSONA
@@ -46,7 +52,7 @@ def add_persona():
     nss = request.form['nss']
     nombre = request.form['nombre']
     telefono = request.form['telefono']
-    query = f"""insert into persona (nss, nombre, telefono)
+    query = f"""insert into per.persona (nss, nombre, telefono)
                 values({nss}, '{nombre}', {telefono})"""
     execute_query(query)
     return redirect(url_for("personas"))
@@ -57,9 +63,11 @@ def add_corporacion():
     nombre = request.form['nombre_corporacion']
     direccion = request.form['direccion']
     telefono = request.form['telefono']
-    query = f"""insert into corporacion(nombre, direccion, telefono)
-                values('{nombre}', '{direccion}', {telefono})"""
-    execute_query(query)
+    reg = select_row("prop.corporacion", f"nombre = '{nombre}'")
+    if len(reg) == 0:
+        query = f"""insert into prop.corporacion(nombre, direccion, telefono)
+                    values('{nombre}', '{direccion}', {telefono})"""
+        execute_query(query)
     return redirect(url_for("corporacion"))
 
 #INSERT TIPO_AVION
@@ -68,7 +76,7 @@ def add_tipo_avion():
     modelo = request.form['modelo']
     capacidad = request.form['capacidad']
     peso = request.form['peso']
-    query = f"""insert into tipo_avion(modelo, capacidad, peso_avion)
+    query = f"""insert into eq.tipo_avion(modelo, capacidad, peso_avion)
                 values('{modelo}', {capacidad}, {peso})"""
     execute_query(query)
     return redirect(url_for('tipo_avion'))
@@ -77,13 +85,16 @@ def add_tipo_avion():
 @app.route("/form-clase-hangar", methods = ['POST'])
 def form_update_clase_hangar():
     num_hangar = request.form['num_hangar_update']
-    data = select_row("clase_hangar", f"num_hangar = {num_hangar}")
-    return render_template('body_data_table.html', table = data, direction = "updates/clase_hangar.html")
+    data = select_row("eq.clase_hangar", f"num_hangar = {num_hangar}")
+    try:
+        return render_template('body_data_table.html', table = data, direction = "updates/clase_hangar.html")
+    except:
+        return redirect(url_for("hangares"))
 
 @app.route("/update-clase-hangar/<num_hangar>", methods = ['POST'])
 def update_clase_hangar(num_hangar):
     capacidad = request.form['capacidad']
-    query = f"update clase_hangar set capacidad = {capacidad} where num_hangar = {num_hangar}"
+    query = f"update eq.clase_hangar set capacidad = {capacidad} where num_hangar = {num_hangar}"
     execute_query(query)
     return redirect(url_for("hangares"))
 
@@ -91,14 +102,17 @@ def update_clase_hangar(num_hangar):
 @app.route("/form-corporacion", methods = ['POST'])
 def form_update_corporacion():
     nombre = request.form['nombre_update']
-    data = select_row("corporacion", f"nombre = '{nombre}'")
-    return render_template('body_data_table.html', table = data, direction = "updates/corporacion.html")
+    data = select_row("prop.corporacion", f"nombre = '{nombre}'")
+    try:
+        return render_template('body_data_table.html', table = data, direction = "updates/corporacion.html")
+    except:
+        return redirect(url_for('corporacion'))
 
 @app.route("/update-corporacion/<nombre>", methods = ['POST'])
 def update_corporacion(nombre):
     direccion = request.form['direccion']
     telefono = request.form['telefono']
-    query = f"update corporacion set direccion = '{direccion}', telefono = {telefono} where nombre = '{nombre}'"
+    query = f"update prop.corporacion set direccion = '{direccion}', telefono = {telefono} where nombre = '{nombre}'"
     execute_query(query)
     return redirect(url_for("corporacion"))
 
@@ -106,15 +120,18 @@ def update_corporacion(nombre):
 @app.route("/form-persona", methods = ['POST'])
 def form_update_persona():
     id = request.form['id_update']
-    data = select_row("persona", f"id = {id}")
-    return render_template('body_data_table.html', table = data, direction = "updates/persona.html")
+    data = select_row("per.persona", f"id = {id}")
+    try:
+        return render_template('body_data_table.html', table = data, direction = "updates/persona.html")
+    except:
+        redirect(url_for('personas'))
 
 @app.route("/update-persona/<id>", methods = ['POST'])
 def update_persona(id):
     nss = request.form['nss']
     nombre = request.form['nombre']
     telefono = request.form['telefono']
-    query = f"update persona set nss = '{nss}', nombre = '{nombre}', telefono = {telefono} where id = {id}"
+    query = f"update per.persona set nss = '{nss}', nombre = '{nombre}', telefono = {telefono} where id = {id}"
     execute_query(query)
     return redirect(url_for("personas"))
 
@@ -122,24 +139,24 @@ def update_persona(id):
 @app.route("/form-tipo-avion", methods = ['POST'])
 def form_update_tipo_avion():
     id = request.form['id_update']
-    data = select_row("tipo_avion", f"id = {id}")
-    return render_template('body_data_table.html', table = data, direction = "updates/tipo_avion.html")
+    data = select_row("eq.tipo_avion", f"id = {id}")
+    try:
+        return render_template('body_data_table.html', table = data, direction = "updates/tipo_avion.html")
+    except:
+        return redirect(url_for('tipo_avion'))
 
 @app.route("/update-tipo-avion/<id>", methods = ['POST'])
 def update_tipo_avion(id):
     modelo = request.form['modelo']
     capacidad = request.form['capacidad']
     peso = request.form['peso']
-    query = f"update tipo_avion set modelo = '{modelo}', capacidad = {capacidad}, peso_avion = {peso} where id = {id}"
+    query = f"update eq.tipo_avion set modelo = '{modelo}', capacidad = {capacidad}, peso_avion = {peso} where id = {id}"
     execute_query(query)
     return redirect(url_for("tipo_avion"))
 
 # DELETE ROW
 @app.route('/delete_row/<table>/<field>/<data>/<url>')
 def delete_row(table, field, data, url):
-    print("campo: ", field)
-    print("tabla: ", table)
-    print("dato: ", data)
     delete_row(table, f"{field} = '{data}'")
     return redirect(url_for(url))
 
@@ -179,4 +196,4 @@ def delete_row(table, condition):
     cursor.close()
 
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+    app.run(port=3000)
