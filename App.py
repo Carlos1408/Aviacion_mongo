@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from Conexion import Conexion
+from DataBase import DataBase
 
-bd = Conexion()
+bd = DataBase()
 
 app = Flask(__name__)
 
@@ -153,7 +153,9 @@ def update_tipo_avion(id):
 # DELETE ROW
 @app.route('/delete_row/<table>/<field>/<data>/<url>')
 def delete_row(table, field, data, url):
-    delete_row(table, f"{field} = '{data}'")
+    print(table, field, data, url)
+    print(table, f"{field} = '{data}'")
+    bd.delete_row(table, f"{field} = '{data}'")
     return redirect(url_for(url))
 
 if __name__ == '__main__':

@@ -1,12 +1,13 @@
 import psycopg2
 from copy import deepcopy
 
-class Conexion:
-    def __init__(self):
-        conexion = psycopg2.connect(host = "localhost", 
+class DataBase:
+    conexion = psycopg2.connect(host = "localhost", 
                             database = "aviacion",
                             user = "api_first_admin",
                             password = "equipo-rojo/proyecto-primer-parcial")
+    def __init__(self):
+        pass
 
     def select_all(self, table):
         cursor = self.conexion.cursor()
