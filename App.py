@@ -48,9 +48,10 @@ def add_persona():
     nss = request.form['nss']
     nombre = request.form['nombre']
     telefono = request.form['telefono']
-    query = f"""insert into per.persona (nss, nombre, telefono)
-                values({nss}, '{nombre}', {telefono})"""
-    bd.execute_query(query)
+    # query = f"""insert into per.persona (nss, nombre, telefono)
+    #             values({nss}, '{nombre}', {telefono})"""
+    # bd.execute_query(query)
+    bd.insert_persona(nss, nombre, telefono)
     return redirect(url_for("personas"))
 
 #INSERT CORPORACION
@@ -127,8 +128,9 @@ def update_persona(id):
     nss = request.form['nss']
     nombre = request.form['nombre']
     telefono = request.form['telefono']
-    query = f"update per.persona set nss = '{nss}', nombre = '{nombre}', telefono = {telefono} where id = {id}"
-    bd.execute_query(query)
+    # query = f"update per.persona set nss = '{nss}', nombre = '{nombre}', telefono = {telefono} where id = {id}"
+    # bd.execute_query(query)
+    bd.update_persona(id, nss, nombre, telefono)
     return redirect(url_for("personas"))
 
 # UPDATE TIPO_AVION
@@ -159,4 +161,4 @@ def delete_row(table, field, data, url):
     return redirect(url_for(url))
 
 if __name__ == '__main__':
-    app.run(port=3000)
+    app.run(port=3000, debug=True)
