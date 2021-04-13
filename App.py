@@ -37,9 +37,10 @@ def add_hangar():
     capacidad = request.form['capacidad']
     reg = bd.select_row("eq.clase_hangar", f"num_hangar = {num_hangar}")
     if len(reg) == 0:
-        query = f"""insert into eq.clase_hangar
-                    values({num_hangar}, {capacidad})"""
-        bd.execute_query(query)
+        # query = f"""insert into eq.clase_hangar
+        #             values({num_hangar}, {capacidad})"""
+        # bd.execute_query(query)
+        bd.insert_clase_hangar(capacidad)
     return redirect(url_for("hangares"))
 
 #INSERT PERSONA
@@ -62,9 +63,10 @@ def add_corporacion():
     telefono = request.form['telefono']
     reg = bd.select_row("prop.corporacion", f"nombre = '{nombre}'")
     if len(reg) == 0:
-        query = f"""insert into prop.corporacion(nombre, direccion, telefono)
-                    values('{nombre}', '{direccion}', {telefono})"""
-        bd.execute_query(query)
+        # query = f"""insert into prop.corporacion(nombre, direccion, telefono)
+        #             values('{nombre}', '{direccion}', {telefono})"""
+        # bd.execute_query(query)
+        bd.insert_corporacion(nombre, direccion, telefono)
     return redirect(url_for("corporacion"))
 
 #INSERT TIPO_AVION
@@ -73,9 +75,10 @@ def add_tipo_avion():
     modelo = request.form['modelo']
     capacidad = request.form['capacidad']
     peso = request.form['peso']
-    query = f"""insert into eq.tipo_avion(modelo, capacidad, peso_avion)
-                values('{modelo}', {capacidad}, {peso})"""
-    bd.execute_query(query)
+    # query = f"""insert into eq.tipo_avion(modelo, capacidad, peso_avion)
+    #             values('{modelo}', {capacidad}, {peso})"""
+    # bd.execute_query(query)
+    bd.insert_tipo_avion(modelo, capacidad, peso)
     return redirect(url_for('tipo_avion'))
 
 # UPDATE CLASE_HANGAR
@@ -91,8 +94,9 @@ def form_update_clase_hangar():
 @app.route("/update-clase-hangar/<num_hangar>", methods = ['POST'])
 def update_clase_hangar(num_hangar):
     capacidad = request.form['capacidad']
-    query = f"update eq.clase_hangar set capacidad = {capacidad} where num_hangar = {num_hangar}"
-    bd.execute_query(query)
+    # query = f"update eq.clase_hangar set capacidad = {capacidad} where num_hangar = {num_hangar}"
+    # bd.execute_query(query)
+    bd.update_clase_hangar(num_hangar, capacidad)
     return redirect(url_for("hangares"))
 
 # UPDATE CORPORACION
@@ -109,8 +113,9 @@ def form_update_corporacion():
 def update_corporacion(nombre):
     direccion = request.form['direccion']
     telefono = request.form['telefono']
-    query = f"update prop.corporacion set direccion = '{direccion}', telefono = {telefono} where nombre = '{nombre}'"
-    bd.execute_query(query)
+    # query = f"update prop.corporacion set direccion = '{direccion}', telefono = {telefono} where nombre = '{nombre}'"
+    # bd.execute_query(query)
+    bd.update_corporacion(nombre, direccion, telefono)
     return redirect(url_for("corporacion"))
 
 # UPDATE PERSONA
@@ -148,8 +153,9 @@ def update_tipo_avion(id):
     modelo = request.form['modelo']
     capacidad = request.form['capacidad']
     peso = request.form['peso']
-    query = f"update eq.tipo_avion set modelo = '{modelo}', capacidad = {capacidad}, peso_avion = {peso} where id = {id}"
-    bd.execute_query(query)
+    # query = f"update eq.tipo_avion set modelo = '{modelo}', capacidad = {capacidad}, peso_avion = {peso} where id = {id}"
+    # bd.execute_query(query)
+    bd.update_tipo_avion(id, modelo, capacidad, peso)
     return redirect(url_for("tipo_avion"))
 
 # DELETE ROW

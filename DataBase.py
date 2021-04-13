@@ -2,16 +2,10 @@ import psycopg2
 from copy import deepcopy
 
 class DataBase:
-    # conexion = psycopg2.connect(host = "localhost", 
-    #                         database = "aviacion",
-    #                         user = "api_first_admin",
-    #                         password = "equipo-rojo/proyecto-primer-parcial")
-
-    conexion = psycopg2.connect(host = "localhost", 
+    conexion = psycopg2.connect(host = "localhost",
                             database = "aviacion",
-                            user = "postgres",
-                            password = "peonmas123")
-
+                            user = "api_first_admin",
+                            password = "equipo-rojo/proyecto-primer-parcial")
 
     def __init__(self):
         pass
@@ -44,6 +38,10 @@ class DataBase:
         cursor.execute(query)
         self.conexion.commit()
         cursor.close()
+
+        # -
+        # Metodos haciendo uso de funciones almacenadas en PostgreSQL
+        # -
 
     def insert_persona(self, nss, nombre, telefono):
         cursor = self.conexion.cursor()
