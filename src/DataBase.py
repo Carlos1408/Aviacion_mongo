@@ -63,7 +63,7 @@ class DataBase:
 
     def insert_tipo_avion(self, modelo, capacidad, peso_avion):
         cursor = self.conexion.cursor()
-        cursor.execute(f"select eq.sp_insert_tipo_avion({modelo}, {capacidad}, {peso_avion})")
+        cursor.execute(f"select eq.sp_insert_tipo_avion('{modelo}', {capacidad}, {peso_avion})")
         self.conexion.commit()
         cursor.close()
 
@@ -74,6 +74,8 @@ class DataBase:
         cursor.close()
 
     def update_corporacion(self, nombre, direccion, telefono):
+        print(nombre, direccion, telefono)
+        print(f"select prop.sp_update_corporacion('{nombre}', '{direccion}', {telefono})")
         cursor = self.conexion.cursor()
         cursor.execute(f"select prop.sp_update_corporacion('{nombre}', '{direccion}', {telefono})")
         self.conexion.commit()
@@ -81,6 +83,8 @@ class DataBase:
 
     def update_clase_hangar(self, num_hangar, capacidad):
         cursor = self.conexion.cursor()
+        print(num_hangar, capacidad)
+        print(f"select eq.sp_update_clase_hangar({num_hangar}, {capacidad})")
         cursor.execute(f"select eq.sp_update_clase_hangar({num_hangar}, {capacidad})")
         self.conexion.commit()
         cursor.close()

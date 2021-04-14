@@ -32,7 +32,6 @@ def tipo_avion():
 # INSERT CLASE_HANGAR
 @app.route("/add-hangar", methods = ['POST'])
 def add_hangar():
-    
     num_hangar = request.form['num_hangar']
     capacidad = request.form['capacidad']
     reg = bd.select_row("eq.clase_hangar", f"num_hangar = {num_hangar}")
@@ -97,6 +96,7 @@ def update_clase_hangar(num_hangar):
     # query = f"update eq.clase_hangar set capacidad = {capacidad} where num_hangar = {num_hangar}"
     # bd.execute_query(query)
     bd.update_clase_hangar(num_hangar, capacidad)
+    print(num_hangar, capacidad)
     return redirect(url_for("hangares"))
 
 # UPDATE CORPORACION
@@ -113,6 +113,7 @@ def form_update_corporacion():
 def update_corporacion(nombre):
     direccion = request.form['direccion']
     telefono = request.form['telefono']
+    print(nombre, direccion, telefono)
     # query = f"update prop.corporacion set direccion = '{direccion}', telefono = {telefono} where nombre = '{nombre}'"
     # bd.execute_query(query)
     bd.update_corporacion(nombre, direccion, telefono)
