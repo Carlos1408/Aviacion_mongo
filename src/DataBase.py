@@ -32,12 +32,47 @@ class DataBase:
         self.conexion.commit()
         cursor.close()
 
+    def execute_query_returning_table(self, query):
+        cursor = self.conexion.cursor()
+        cursor.execute(query)
+        data = deepcopy(cursor.fetchall())
+        self.conexion.commit()
+        cursor.close()
+        return data
+
     def delete_row(self, table, condition):
         cursor = self.conexion.cursor()
         query = f"delete from {table} where {condition}"
         cursor.execute(query)
         self.conexion.commit()
         cursor.close()
+
+    def select_fields(self, fields, table):
+        cursor = self.conexion.cursor()
+        query = f"select {fields} from {table}"
+        cursor.execute(query)
+        data = deepcopy(cursor.fetchall())
+        self.conexion.commit()
+        cursor.close()
+        return data
+
+    # def select_fields(self, fields, table, group_by):
+    #     cursor = self.conexion.cursor()
+    #     query = f"select {fields} from {table} group by {group_by}"
+    #     cursor.execute(query)
+    #     data = deepcopy(cursor.fetchall())
+    #     self.conexion.commit()
+    #     cursor.close()
+    #     return data
+
+    # def select_fields(self, fields, table, group_by, order_by):
+    #     cursor = self.conexion.cursor()
+    #     query = f"select {fields} from {table} group by {group_by} order by {order_by}"
+    #     cursor.execute(query)
+    #     data = deepcopy(cursor.fetchall())
+    #     self.conexion.commit()
+    #     cursor.close()
+    #     return data
 
         # -
         # Metodos haciendo uso de funciones almacenadas en PostgreSQL

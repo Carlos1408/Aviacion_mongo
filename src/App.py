@@ -29,6 +29,33 @@ def tipo_avion():
     data = bd.select_all("eq.tipo_avion order by id")
     return render_template('body_data_table.html', table = data, direction = "tipo_avion.html")
 
+@app.route("/empleados")
+def empleados():
+    data = bd.select_all("per.empleados order by id")
+    data_select = bd.select_fields('tipo_servicio', 'per.servicio')
+    return render_template('body_data_table.html', table = data, table_select = data_select, direction = "empleado.html")
+
+@app.route("/piloto")
+def piloto():
+    data = bd.select_all("eq.piloto order by id")
+    return render_template('body_data_table.html',table = data, direction = "piloto.html")
+
+@app.route("/avion")
+def avion():
+    data = bd.select_all("eq.avion")
+    data_num_hangar = bd.select_fields("num_hangar", "eq.clase_hangar order by num_hangar")
+    data_piloto = bd.execute_query_returning_table("""select pi.num_lic, pe.nombre from eq.piloto pi
+                                                    inner join per.persona pe on pi.id = pe.id""")
+    data_corporacion = bd.select_fields("nombre", "prop.corporacion")
+    data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
+    return render_template('body_data_table.html', 
+                            table = data,
+                            table_num_hangar = data_num_hangar,
+                            table_piloto = data_piloto,
+                            table_corporacion = data_corporacion,
+                            table_tipo_avion = data_tipo_avion,
+                            direction = "avion.html")
+
 # INSERT CLASE_HANGAR
 @app.route("/add-hangar", methods = ['POST'])
 def add_hangar():
@@ -48,11 +75,36 @@ def add_persona():
     nss = request.form['nss']
     nombre = request.form['nombre']
     telefono = request.form['telefono']
+    try:
+        tipo_persona = request.form['tipo_persona']
+    except:
+        tipo_persona = 'persona'
+    print(nss, nombre, telefono, tipo_persona)
     # query = f"""insert into per.persona (nss, nombre, telefono)
     #             values({nss}, '{nombre}', {telefono})"""
     # bd.execute_query(query)
-    bd.insert_persona(nss, nombre, telefono)
+    # bd.insert_persona(nss, nombre, telefono)
+    if tipo_persona == 'empleado':
+        return redirect(url_for("empleados"))
+    elif tipo_persona == 'piloto':
+        return redirect(url_for("piloto"))
     return redirect(url_for("personas"))
+
+#INSERT EMPLEADO
+@app.route("/add-empleado", methods = ['POST'])
+def add_empleado():
+    salario = request.form['salario']
+    turno = request.form['turno']
+    tipo_servicio = request.form['tipo_servicio']
+    print(salario, turno, tipo_servicio)
+    return redirect(url_for("empleados"))
+
+#INSERT PILOTO
+@app.route("/add-piloto", methods = ['POST'])
+def add_piloto():
+    num_lic = request.form['num_lic']
+    print(num_lic)
+    return redirect(url_for("piloto"))
 
 #INSERT CORPORACION
 @app.route("/add-corporacion", methods = ['POST'])
@@ -67,6 +119,17 @@ def add_corporacion():
         # bd.execute_query(query)
         bd.insert_corporacion(nombre, direccion, telefono)
     return redirect(url_for("corporacion"))
+
+#INSERT AVION
+@app.route("/add-avion", methods = ['POST'])
+def add_avion():
+    matricula = request.form['matricula']
+    num_hangar = request.form['num_hangar']
+    piloto = request.form['piloto']
+    corporacion = request.form['corporacion']
+    tipo_avion = request.form['tipo_avion']
+    print(matricula, num_hangar, piloto, corporacion, tipo_avion)
+    return redirect(url_for("avion"))
 
 #INSERT TIPO_AVION
 @app.route("/add-tipo-avion", methods = ['POST'])

@@ -18,10 +18,16 @@
                 <div class="form-group">
                     <input type="number" min="1" name="telefono" placeholder="Telefono" required class="form-control">
                 </div>
-                <div class="btn-group btn-block">
-                    <button type="submit" class="btn btn-primary">Insertar</button>
-                    <a href="/" class="btn btn-danger">Volver</a>
-                </div>
+                <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                    <label class="btn btn-outline-light">
+                      <input type="radio" name="tipo_persona" id="option2" autocomplete="off" value="empleado"> Empleado
+                    </label>
+                    <label class="btn btn-outline-light">
+                      <input type="radio" name="tipo_persona" id="option3" autocomplete="off" value="piloto"> Piloto
+                    </label>
+                  </div>
+                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                <a href="/" class="btn btn-danger btn-block">Volver</a>
             </form>
         </div>
         <div class="card card-body">
@@ -34,8 +40,8 @@
         </div>
     </div>
     <div class="col-md-7">
-        <table class="table table-striped table-bordered bg-gray table-sm">
-            <thead>
+        <table class="table table-striped table-bordered table-sm table-hover">
+            <thead class="bg-dark">
                 <tr>
                     <td>Id</td>
                     <td>NSS</td>
