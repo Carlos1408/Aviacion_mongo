@@ -11,50 +11,58 @@ def index():
 
 @app.route('/hangar/')
 def hangares():
+    data_fields = ('Numero de hangar', 'Capacidad')
     data = bd.select_all("eq.clase_hangar order by num_hangar")
-    return render_template('body_data_table.html', table = data, direction = "hangar.html")
+    return render_template('hangar.html', table = data, fields = data_fields)
+    # return render_template('body_data_table.html', table = data, direction = "hangar.html")
 
 @app.route('/persona')
 def personas():
+    data_fields = ('Id', 'NSS', 'Nombre', 'Telefono')
     data = bd.select_all("per.persona order by id")
-    return render_template('body_data_table.html', table = data, direction = "persona.html")
+    return render_template('persona.html', table = data, fields = data_fields)
 
 @app.route('/corporacion')
 def corporacion():
+    data_fields = ('Nombre', 'Direccion', 'Telefono')
     data = bd.select_all("prop.corporacion")
-    return render_template('body_data_table.html', table = data, direction = "corporacion.html")
+    return render_template('corporacion.html',fields = data_fields, table = data)
 
 @app.route('/tipo-avion')
 def tipo_avion():
+    data_fields = ('Id', 'Modelo', 'Capacidad', 'Peso del avion')
     data = bd.select_all("eq.tipo_avion order by id")
-    return render_template('body_data_table.html', table = data, direction = "tipo_avion.html")
+    return render_template('tipo_avion.html', table = data, fields = data_fields)
 
 @app.route("/empleados")
 def empleados():
+    data_fields = ('Id', 'Salario', 'Turno', 'Tipo de servicio')
     data = bd.select_all("per.empleados order by id")
     data_select = bd.select_fields('tipo_servicio', 'per.servicio')
-    return render_template('body_data_table.html', table = data, table_select = data_select, direction = "empleado.html")
+    return render_template('empleado.html', table = data, fields = data_fields, table_select = data_select)
 
 @app.route("/piloto")
 def piloto():
+    data_fields = ('Id', 'Num. licencia')
     data = bd.select_all("eq.piloto order by id")
-    return render_template('body_data_table.html',table = data, direction = "piloto.html")
+    return render_template('piloto.html', table = data, fields = data_fields)
 
 @app.route("/avion")
 def avion():
+    data_fields = ('Matricula', 'Numero de hangar', 'Piloto', 'Corporacion', 'Tipo de avion')
     data = bd.select_all("eq.avion")
     data_num_hangar = bd.select_fields("num_hangar", "eq.clase_hangar order by num_hangar")
     data_piloto = bd.execute_query_returning_table("""select pi.num_lic, pe.nombre from eq.piloto pi
                                                     inner join per.persona pe on pi.id = pe.id""")
     data_corporacion = bd.select_fields("nombre", "prop.corporacion")
     data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
-    return render_template('body_data_table.html', 
+    return render_template('avion.html',
+                            fields = data_fields,
                             table = data,
                             table_num_hangar = data_num_hangar,
                             table_piloto = data_piloto,
                             table_corporacion = data_corporacion,
-                            table_tipo_avion = data_tipo_avion,
-                            direction = "avion.html")
+                            table_tipo_avion = data_tipo_avion)
 
 # INSERT CLASE_HANGAR
 @app.route("/add-hangar", methods = ['POST'])
@@ -147,9 +155,10 @@ def add_tipo_avion():
 @app.route("/form-clase-hangar", methods = ['POST'])
 def form_update_clase_hangar():
     num_hangar = request.form['num_hangar_update']
+    data_fields = ('Numero de hangar', 'Capacidad')
     data = bd.select_row("eq.clase_hangar", f"num_hangar = {num_hangar}")
     try:
-        return render_template('body_data_table.html', table = data, direction = "updates/clase_hangar.html")
+        return render_template('updates/clase_hangar.html', table = data, fields = data_fields)
     except:
         return redirect(url_for("hangares"))
 
@@ -166,9 +175,10 @@ def update_clase_hangar(num_hangar):
 @app.route("/form-corporacion", methods = ['POST'])
 def form_update_corporacion():
     nombre = request.form['nombre_update']
+    data_fields = ('Nombre', 'Direccion', 'Telefono')
     data = bd.select_row("prop.corporacion", f"nombre = '{nombre}'")
     try:
-        return render_template('body_data_table.html', table = data, direction = "updates/corporacion.html")
+        return render_template('updates/corporacion.html', table = data, fields = data_fields)
     except:
         return redirect(url_for('corporacion'))
 
@@ -186,9 +196,10 @@ def update_corporacion(nombre):
 @app.route("/form-persona", methods = ['POST'])
 def form_update_persona():
     id = request.form['id_update']
+    data_fields = ('Id', 'NSS', 'Nombre', 'Telefono')
     data = bd.select_row("per.persona", f"id = {id}")
     try:
-        return render_template('body_data_table.html', table = data, direction = "updates/persona.html")
+        return render_template('updates/persona.html', table = data, fields = data_fields)
     except:
         redirect(url_for('personas'))
 
@@ -206,9 +217,10 @@ def update_persona(id):
 @app.route("/form-tipo-avion", methods = ['POST'])
 def form_update_tipo_avion():
     id = request.form['id_update']
+    data_fields = ('Id', 'Modelo', 'Capacidad', 'Peso del avion')
     data = bd.select_row("eq.tipo_avion", f"id = {id}")
     try:
-        return render_template('body_data_table.html', table = data, direction = "updates/tipo_avion.html")
+        return render_template('updates/tipo_avion.html', table = data, fields = data_fields)
     except:
         return redirect(url_for('tipo_avion'))
 

@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% from "./macros/data_table.html" import print_data_table %}
 {% block body %}
 <div class="row">
     <div class="col-md-5">
@@ -65,18 +66,7 @@
         </div>
     </div>
     <div class="col-md-7">
-        <table class="table table-striped table-bordered table-sm table-hover">
-            <thead class="bg-dark">
-                <tr>
-                    <td>Id</td>
-                    <td>Salario</td>
-                    <td>Turno</td>
-                    <td>Tipo de servicio</td>
-                </tr>
-            </thead>
-            {% block body_table %}
-            {% endblock %}
-        </table>
+        {{ print_data_table(fields, table) }}
     </div>
 </div>
 {% endblock %}

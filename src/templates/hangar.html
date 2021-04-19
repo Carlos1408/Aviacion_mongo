@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% from "./macros/data_table.html" import print_data_table %}
 {% block body %}
 <div class="row">
     <div class="col-md-5">
@@ -31,16 +32,7 @@
         </div>
     </div>
     <div class="col-md-7">
-        <table class="table table-striped table-bordered bg-gray table-sm">
-            <thead>
-                <tr>
-                    <td>Numero de hangar</td>
-                    <td>Capacidad</td>
-                </tr>
-            </thead>
-            {% block body_table %}
-            {% endblock %}
-        </table>
+        {{ print_data_table(fields, table) }}
     </div>
 </div>
 {% endblock %}
