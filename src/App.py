@@ -34,6 +34,13 @@ def tipo_avion():
     data = bd.select_all("eq.tipo_avion order by id")
     return render_template('tipo_avion.html', table = data, fields = data_fields)
 
+@app.route('/servicio')
+def servicio():
+    data_fields = ('Tipo de servicio', 'Horas', 'Tipo de avion')
+    data = bd.select_all("per.servicio")
+    data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
+    return render_template('servicio.html', table = data, fields = data_fields, table_tipo_avion = data_tipo_avion)
+
 @app.route("/empleados")
 def empleados():
     data_fields = ('Id', 'Salario', 'Turno', 'Tipo de servicio')
@@ -150,6 +157,15 @@ def add_tipo_avion():
     # bd.execute_query(query)
     bd.insert_tipo_avion(modelo, capacidad, peso)
     return redirect(url_for('tipo_avion'))
+
+#INSERT SERVICIO
+@app.route("/add-servicio", methods = ['POST'])
+def add_servicio():
+    tipo_servicio = request.form['tipo_servicio']
+    horas = request.form['horas']
+    tipo_avion = request.form['tipo_avion']
+    print(tipo_servicio, horas, tipo_avion)
+    return redirect(url_for('servicio'))
 
 # UPDATE CLASE_HANGAR
 @app.route("/form-clase-hangar", methods = ['POST'])

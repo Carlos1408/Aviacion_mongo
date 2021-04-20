@@ -3,39 +3,31 @@
 {% block body %}
 <div class="row">
     <div class="col-md-5">
-        <h1>Empleado</h1>
+        <h1>Servicio</h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-5">
         <div class="card card-body">
-            <form action="{{ url_for('add_empleado') }}" method="POST">
+            <form action="{{ url_for('add_servicio') }}" method="POST">
                 <div class="form-group">
-                    <input type="number" name="id" placeholder="Id generada"  class="form-control" disabled="True">
+                    <input type="text" name="tipo_servicio" placeholder="Tipo de servicio" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <input type="number" name="salario" placeholder="Salario"  class="form-control" required>
+                    <input type="number" name="horas" placeholder="Horas" class="form-control" required>
                 </div>
+                <!-- tipo de avion, agregar el modelo de avion al select -->
                 <div class="form-group">
-                    <select name="turno" class="form-control" required>
-                        <option selected disabled value="">Turno</option>
-                        <option value="madrugada">Madrugada</option>
-                        <option value="mañana">Mañana</option>
-                        <option value="tarde">Tarde</option>
-                        <option value="noche">Noche</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select name="tipo_servicio" class="form-control" required>
-                        <option selected disabled value="">Tipo de servicio</option>
-                        {% for row in table_select %}
-                        <option value="{{row.0}}">{{row.0}}</option>
+                    <select name="tipo_avion" class="form-control" required>
+                        <option selected aria-readonly value="">Tipo de avion</option>
+                        {% for row in table_tipo_avion %}
+                        <option value="{{row.0}}">{{row.0}} {{row.1}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="btn-group btn-block">
                     <button type="submit" class="btn btn-primary">Registrar</button>
-                    <a href="/persona" class="btn btn-danger">Volver</a>
+                    <a href="/" class="btn btn-danger">Volver</a>
                 </div>
             </form>
         </div>
