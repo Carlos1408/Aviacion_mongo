@@ -9,163 +9,125 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/hangar/')
-def hangares():
-    data_fields = ('Numero de hangar', 'Capacidad')
-    data = bd.select_all("eq.clase_hangar order by num_hangar")
-    return render_template('hangar.html', table = data, fields = data_fields)
-    # return render_template('body_data_table.html', table = data, direction = "hangar.html")
-
-@app.route('/persona')
-def personas():
-    data_fields = ('Id', 'NSS', 'Nombre', 'Telefono')
-    data = bd.select_all("per.persona order by id")
-    return render_template('persona.html', table = data, fields = data_fields)
-
-@app.route('/corporacion')
-def corporacion():
-    data_fields = ('Nombre', 'Direccion', 'Telefono')
-    data = bd.select_all("prop.corporacion")
-    return render_template('corporacion.html',fields = data_fields, table = data)
-
-@app.route('/tipo-avion')
-def tipo_avion():
-    data_fields = ('Id', 'Modelo', 'Capacidad', 'Peso del avion')
-    data = bd.select_all("eq.tipo_avion order by id")
-    return render_template('tipo_avion.html', table = data, fields = data_fields)
-
-@app.route('/servicio')
-def servicio():
-    data_fields = ('Tipo de servicio', 'Horas', 'Tipo de avion')
-    data = bd.select_all("per.servicio")
-    data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
-    return render_template('servicio.html', table = data, fields = data_fields, table_tipo_avion = data_tipo_avion)
-
-@app.route("/empleados")
-def empleados():
-    data_fields = ('Id', 'Salario', 'Turno', 'Tipo de servicio')
-    data = bd.select_all("per.empleados order by id")
-    data_select = bd.select_fields('tipo_servicio', 'per.servicio')
-    return render_template('empleado.html', table = data, fields = data_fields, table_select = data_select)
-
-@app.route("/piloto")
-def piloto():
-    data_fields = ('Id', 'Num. licencia')
-    data = bd.select_all("eq.piloto order by id")
-    return render_template('piloto.html', table = data, fields = data_fields)
-
-@app.route("/avion")
-def avion():
-    data_fields = ('Matricula', 'Numero de hangar', 'Piloto', 'Corporacion', 'Tipo de avion')
-    data = bd.select_all("eq.avion")
-    data_num_hangar = bd.select_fields("num_hangar", "eq.clase_hangar order by num_hangar")
-    data_piloto = bd.execute_query_returning_table("""select pi.num_lic, pe.nombre from eq.piloto pi
-                                                    inner join per.persona pe on pi.id = pe.id""")
-    data_corporacion = bd.select_fields("nombre", "prop.corporacion")
-    data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
-    return render_template('avion.html',
-                            fields = data_fields,
-                            table = data,
-                            table_num_hangar = data_num_hangar,
-                            table_piloto = data_piloto,
-                            table_corporacion = data_corporacion,
-                            table_tipo_avion = data_tipo_avion)
+@app.route('/index-table/<schema>/<table>')
+def index_table(schema, table):
+    data_fields = bd.execute_query_returning_table(f"SELECT column_name FROM information_schema.columns WHERE table_schema = '{schema}' AND table_name = '{table}'")
+    data = bd.select_all(f"{schema}.{table}")
+    return render_template('index_table.html', table = data, fields = data_fields, table_name = table)
+    # return redirect(url_for('index'))
 
 # INSERT CLASE_HANGAR
-@app.route("/add-hangar", methods = ['POST'])
+@app.route("/add-clase_hangar", methods = ['GET', 'POST'])
 def add_hangar():
-    num_hangar = request.form['num_hangar']
-    capacidad = request.form['capacidad']
-    reg = bd.select_row("eq.clase_hangar", f"num_hangar = {num_hangar}")
-    if len(reg) == 0:
-        # query = f"""insert into eq.clase_hangar
-        #             values({num_hangar}, {capacidad})"""
-        # bd.execute_query(query)
-        bd.insert_clase_hangar(capacidad)
-    return redirect(url_for("hangares"))
+    if request.method == 'GET':
+        print('GET')
+        return render_template('register_forms/hangar.html')
+    elif request.method == 'POST':
+        num_hangar = request.form['num_hangar']
+        capacidad = request.form['capacidad']
+        print('POST', num_hangar, capacidad)
+        return redirect('/index-table/eq/clase_hangar')
 
 #INSERT PERSONA
-@app.route("/add-persona", methods = ['POST'])
+@app.route("/add-persona", methods = ['GET', 'POST'])
 def add_persona():
-    nss = request.form['nss']
-    nombre = request.form['nombre']
-    telefono = request.form['telefono']
-    try:
-        tipo_persona = request.form['tipo_persona']
-    except:
-        tipo_persona = 'persona'
-    print(nss, nombre, telefono, tipo_persona)
-    # query = f"""insert into per.persona (nss, nombre, telefono)
-    #             values({nss}, '{nombre}', {telefono})"""
-    # bd.execute_query(query)
-    # bd.insert_persona(nss, nombre, telefono)
-    if tipo_persona == 'empleado':
-        return redirect(url_for("empleados"))
-    elif tipo_persona == 'piloto':
-        return redirect(url_for("piloto"))
-    return redirect(url_for("personas"))
+    if request.method == 'GET':
+        return render_template('register_forms/persona.html')
+    elif request.method == 'POST':
+        nss = request.form['nss']
+        nombre = request.form['nombre']
+        telefono = request.form['telefono']
+        try:
+            tipo_persona = request.form['tipo_persona']
+        except:
+            tipo_persona = 'persona'
+        print(nss, nombre, telefono, tipo_persona)
+        if tipo_persona == 'empleado':
+            return redirect(url_for("add_empleado"))
+        elif tipo_persona == 'piloto':
+            return redirect(url_for("add_piloto"))
+        return redirect('/index-table/per/persona')
 
 #INSERT EMPLEADO
-@app.route("/add-empleado", methods = ['POST'])
+@app.route("/add-empleados", methods = ['GET', 'POST'])
 def add_empleado():
-    salario = request.form['salario']
-    turno = request.form['turno']
-    tipo_servicio = request.form['tipo_servicio']
-    print(salario, turno, tipo_servicio)
-    return redirect(url_for("empleados"))
+    if request.method == 'GET':
+        data_tipo_servicio = bd.select_fields('tipo_servicio', 'per.servicio')
+        return render_template('register_forms/empleado.html', table_tipo_servicio = data_tipo_servicio)
+    elif request.method == 'POST':
+        salario = request.form['salario']
+        turno = request.form['turno']
+        tipo_servicio = request.form['tipo_servicio']
+        print(salario, turno, tipo_servicio)
+        return redirect('/index-table/per/empleados')
 
 #INSERT PILOTO
-@app.route("/add-piloto", methods = ['POST'])
+@app.route("/add-piloto", methods = ['GET', 'POST'])
 def add_piloto():
-    num_lic = request.form['num_lic']
-    print(num_lic)
-    return redirect(url_for("piloto"))
+    if request.method == 'GET':
+        return render_template('register_forms/piloto.html')
+    elif request.method == 'POST':
+        num_lic = request.form['num_lic']
+        print(num_lic)
+        return redirect('/index-table/eq/piloto')
 
 #INSERT CORPORACION
-@app.route("/add-corporacion", methods = ['POST'])
+@app.route("/add-corporacion", methods = ['GET', 'POST'])
 def add_corporacion():
-    nombre = request.form['nombre_corporacion']
-    direccion = request.form['direccion']
-    telefono = request.form['telefono']
-    reg = bd.select_row("prop.corporacion", f"nombre = '{nombre}'")
-    if len(reg) == 0:
-        # query = f"""insert into prop.corporacion(nombre, direccion, telefono)
-        #             values('{nombre}', '{direccion}', {telefono})"""
-        # bd.execute_query(query)
-        bd.insert_corporacion(nombre, direccion, telefono)
-    return redirect(url_for("corporacion"))
+    if request.method == 'GET':
+        return render_template('register_forms/corporacion.html')
+    elif request.method == 'POST':
+        nombre = request.form['nombre_corporacion']
+        direccion = request.form['direccion']
+        telefono = request.form['telefono']
+        return redirect('/index-table/prop/corporacion')
 
 #INSERT AVION
-@app.route("/add-avion", methods = ['POST'])
+@app.route("/add-avion", methods = ['GET', 'POST'])
 def add_avion():
-    matricula = request.form['matricula']
-    num_hangar = request.form['num_hangar']
-    piloto = request.form['piloto']
-    corporacion = request.form['corporacion']
-    tipo_avion = request.form['tipo_avion']
-    print(matricula, num_hangar, piloto, corporacion, tipo_avion)
-    return redirect(url_for("avion"))
+    if request.method == 'GET':
+        data_num_hangar = bd.select_fields("num_hangar", "eq.clase_hangar order by num_hangar")
+        data_piloto = bd.execute_query_returning_table("""select pi.num_lic, pe.nombre from eq.piloto pi
+                                                        inner join per.persona pe on pi.id = pe.id""")
+        data_corporacion = bd.select_fields("nombre", "prop.corporacion")
+        data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
+        return render_template('register_forms/avion.html',
+                                table_num_hangar = data_num_hangar,
+                                table_piloto = data_piloto,
+                                table_corporacion = data_corporacion,
+                                table_tipo_avion = data_tipo_avion)
+    elif request.method == 'POST':
+        matricula = request.form['matricula']
+        num_hangar = request.form['num_hangar']
+        piloto = request.form['piloto']
+        corporacion = request.form['corporacion']
+        tipo_avion = request.form['tipo_avion']
+        print(matricula, num_hangar, piloto, corporacion, tipo_avion)
+        return redirect('/index-table/eq/avion')
 
 #INSERT TIPO_AVION
-@app.route("/add-tipo-avion", methods = ['POST'])
+@app.route("/add-tipo_avion", methods = ['GET', 'POST'])
 def add_tipo_avion():
-    modelo = request.form['modelo']
-    capacidad = request.form['capacidad']
-    peso = request.form['peso']
-    # query = f"""insert into eq.tipo_avion(modelo, capacidad, peso_avion)
-    #             values('{modelo}', {capacidad}, {peso})"""
-    # bd.execute_query(query)
-    bd.insert_tipo_avion(modelo, capacidad, peso)
-    return redirect(url_for('tipo_avion'))
+    if request.method == 'GET':
+        return render_template('register_forms/tipo_avion.html')
+    elif request.method == 'POST':
+        modelo = request.form['modelo']
+        capacidad = request.form['capacidad']
+        peso = request.form['peso']
+        return redirect('/index-table/eq/tipo_avion')
 
 #INSERT SERVICIO
-@app.route("/add-servicio", methods = ['POST'])
+@app.route("/add-servicio", methods = ['GET', 'POST'])
 def add_servicio():
-    tipo_servicio = request.form['tipo_servicio']
-    horas = request.form['horas']
-    tipo_avion = request.form['tipo_avion']
-    print(tipo_servicio, horas, tipo_avion)
-    return redirect(url_for('servicio'))
+    if request.method == 'GET':
+        data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
+        return render_template('register_forms/servicio.html', table_tipo_avion = data_tipo_avion)
+    elif request.method == 'POST':
+        tipo_servicio = request.form['tipo_servicio']
+        horas = request.form['horas']
+        tipo_avion = request.form['tipo_avion']
+        print(tipo_servicio, horas, tipo_avion)
+        return redirect('/index-table/per/servicio')
 
 # UPDATE CLASE_HANGAR
 @app.route("/form-clase-hangar", methods = ['POST'])

@@ -5,6 +5,7 @@
                 {% for field in fields %}
                 <td>{{field}}</td>
                 {% endfor %}
+                <td>Operaciones</td>
             </tr>
         </thead>
         <body>
@@ -13,6 +14,10 @@
                 {% for cell in row %}
                 <td>{{cell}}</td>
                 {% endfor %}
+                <td>
+                    <a class="btn btn-info btn-sm">Editar</a>
+                    <a class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
             </tr>
             {% endfor %}
         </body>
