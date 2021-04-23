@@ -10,15 +10,23 @@
     <div class="col-md-6 offset-md-3">
         <div class="card card-body">
             <form action="{{ url_for('add_persona') }}" method="POST">
-                
+
                 {{ render_persona_form() }}
 
-                 <div class="form-group">
+                <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                    <label class="btn btn-outline-light">
+                        <input type="radio" name="tipo_persona" id="option2" autocomplete="off" value="empleado"> Empleado
+                    </label>
+                    <label class="btn btn-outline-light">
+                        <input type="radio" name="tipo_persona" id="option3" autocomplete="off" value="piloto"> Piloto
+                    </label>
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-                 </div>
-                 <div class="form-group">
+                </div>
+                <div class="form-group">
                     <a href="/index-table/per/persona" class="btn btn-danger btn-block">Volver</a>
-                 </div>
+                </div>
             </form>
         </div>
     </div>
