@@ -194,7 +194,7 @@ def update_avion(matricula):
                                                         inner join per.persona pe on pi.id = pe.id""")
         data_corporacion = bd.select_fields("nombre", "prop.corporacion")
         data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
-        return render_template('register_forms/avion.html',
+        return render_template('./updates/avion.html',
                                 table_num_hangar = data_num_hangar,
                                 table_piloto = data_piloto,
                                 table_corporacion = data_corporacion,
@@ -236,7 +236,7 @@ def update_servicio(tipo_servicio):
     if request.method == 'GET':
         print('UPDATE GET')
         data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
-        return render_template('register_forms/servicio.html',
+        return render_template('./updates/servicio.html',
                                 table_tipo_avion = data_tipo_avion,
                                 tipo_servicio = tipo_servicio)
     elif request.method == 'POST':
