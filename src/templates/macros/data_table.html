@@ -3,7 +3,7 @@
         <thead class="bg-dark">
             <tr>
                 {% for field in fields %}
-                <td>{{field}}</td>
+                <td>{{field.0.capitalize().replace('_', ' ')}}</td>
                 {% endfor %}
                 <td>Operaciones</td>
             </tr>

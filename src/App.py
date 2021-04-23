@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from DataBase import DataBase
+import data_structs
 
 bd = DataBase()
 
@@ -11,10 +12,22 @@ def index():
 
 @app.route('/index-table/<schema>/<table>')
 def index_table(schema, table):
-    data_fields = bd.execute_query_returning_table(f"SELECT column_name FROM information_schema.columns WHERE table_schema = '{schema}' AND table_name = '{table}'")
+    data_fields = bd.execute_query_returning_table(f"""SELECT column_name
+                                                        FROM information_schema.columns
+                                                        WHERE table_schema = '{schema}'
+                                                        AND table_name = '{table}'""")
     data = bd.select_all(f"{schema}.{table}")
-    return render_template('index_table.html', table = data, fields = data_fields, table_name = table)
-    # return redirect(url_for('index'))
+    # print(schema)
+    # data_structs.table['schema'] = schema
+    # data_structs.table['table_name'] = table
+    # data_structs.table['fields'] = data_fields
+    # data_structs.table['data'] = data
+    # print(data_structs.table)
+    return render_template('index_table.html',
+                            table = data,
+                            fields = data_fields,
+                            table_name = table,
+                            schema_name = schema)
 
 # INSERT CLASE_HANGAR
 @app.route("/add-clase_hangar", methods = ['GET', 'POST'])
@@ -53,7 +66,8 @@ def add_persona():
 def add_empleado():
     if request.method == 'GET':
         data_tipo_servicio = bd.select_fields('tipo_servicio', 'per.servicio')
-        return render_template('register_forms/empleado.html', table_tipo_servicio = data_tipo_servicio)
+        return render_template('register_forms/empleado.html',
+                                table_tipo_servicio = data_tipo_servicio)
     elif request.method == 'POST':
         salario = request.form['salario']
         turno = request.form['turno']
@@ -140,13 +154,17 @@ def form_update_clase_hangar():
     except:
         return redirect(url_for("hangares"))
 
-@app.route("/update-clase-hangar/<num_hangar>", methods = ['POST'])
+@app.route("/update-clase_hangar/<num_hangar>", methods = ['GET, POST'])
 def update_clase_hangar(num_hangar):
-    capacidad = request.form['capacidad']
+    if request.method == 'GET':
+        print('UPDATE GET')
+    elif request.method == 'POST':
+        print('UPDATE POST')
+    # capacidad = request.form['capacidad']
     # query = f"update eq.clase_hangar set capacidad = {capacidad} where num_hangar = {num_hangar}"
     # bd.execute_query(query)
-    bd.update_clase_hangar(num_hangar, capacidad)
-    print(num_hangar, capacidad)
+    # bd.update_clase_hangar(num_hangar, capacidad)
+    # print(num_hangar, capacidad)
     return redirect(url_for("hangares"))
 
 # UPDATE CORPORACION
@@ -211,6 +229,15 @@ def update_tipo_avion(id):
     # bd.execute_query(query)
     bd.update_tipo_avion(id, modelo, capacidad, peso)
     return redirect(url_for("tipo_avion"))
+
+@app.route("/update/<schema>/<table>", methods = ['POST'])
+def update(schema, table):
+    print('schema: ', schema)
+    print('tabla: ', table)
+    data = request.form['data']
+    print('data: ', data)
+    # return redirect(f"/index-table/{schema}/{table}")
+    return redirect(f"/update-{table}/{data}")
 
 # DELETE ROW
 @app.route('/delete_row/<table>/<field>/<data>/<url>')

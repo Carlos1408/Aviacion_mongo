@@ -2,17 +2,17 @@
 {% from "./macros/data_table.html" import print_data_table %}
 {% block body %}
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <h1>{{ table_name }}</h1>
+    <div class="col-md-6 offset-md-3">
+        <h1>{{ table_name.capitalize().replace('_', ' ') }}</h1>
     </div>
 </div>
 <div class="row pt-4">
     <div class="col-md-6 offset-md-3">
         <div class="card card-body">
-            <form action="{{ url_for('add_tipo_avion') }}" method="POST">
+            <form action="/update/{{ schema_name }}/{{ table_name }}" method="POST">
                 <div class="form-row form-group">
                     <div class="col">
-                    <input type="text" name="modelo" placeholder="Id" required class="form-control">
+                    <input type="text" name="data" placeholder="Id" required class="form-control">
                     </div>
                     <div class="col">
                         <button type="submit" class="btn btn-info btn-block">Buscar registro</button>

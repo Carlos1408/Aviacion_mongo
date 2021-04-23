@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% from "./macros/data_table.html" import print_data_table %}
+{% from "./macros/forms/avion_form.html" import render_avion_form %}
 {% block body %}
 <div class="row">
     <div class="col-md-6 offset-md-3">
@@ -10,58 +10,15 @@
     <div class="col-md-6 offset-md-3">
         <div class="card card-body">
             <form action="{{ url_for('add_avion') }}" method="POST">
+
+                {{ render_avion_form(table_num_hangar, table_piloto, table_corporacion, table_tipo_avion) }}
+
                 <div class="form-group">
-                    <input type="text" name="matricula" placeholder="Matricula" class="form-control" required>
+                    <button type="submit" class="btn btn-primary btn-block">Registrar</button>
                 </div>
-                <!-- num_hangar -->
                 <div class="form-group">
-                    <select name="num_hangar" class="form-control" required>
-                        <option selected disabled value="">Numero de hangar</option>
-                        {% for row in table_num_hangar %}
-                        <option value="{{row.0}}">{{row.0}}</option>
-                        {% endfor %}
-                    </select>
+                    <a href="/index-table/eq/avion" class="btn btn-danger btn-block">Volver</a>
                 </div>
-                <!-- piloto, a los select agregar los nombres de los pilotos -->
-                <div class="form-group">
-                    <select name="piloto" class="form-control" required>
-                        <option selected disabled value="">Piloto(licencia)</option>
-                        {% for row in table_piloto %}
-                        <option value="{{row.0}}">{{row.0}} {{row.1}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <!-- corporacion -->
-                <div class="form-group">
-                    <select name="corporacion" class="form-control" required>
-                        <option selected disabled value="">Corporacion</option>
-                        {% for row in table_corporacion %}
-                        <option value="{{row.0}}">{{row.0}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <!-- tipo de avion, agregar el modelo de avion al select -->
-                <div class="form-group">
-                    <select name="tipo_avion" class="form-control" required>
-                        <option selected disabled value="">Tipo de avion</option>
-                        {% for row in table_tipo_avion %}
-                        <option value="{{row.0}}">{{row.0}} {{row.1}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="btn-group btn-block">
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                    <a href="/index-table/eq/avion" class="btn btn-danger">Volver</a>
-                </div>
-            </form>
-        </div>
-        <div class="card card-body">
-            <!-- se debe implementar los metodos para update empleado en python -->
-            <form action="" method="POST">
-                <div class="form-group">
-                    <input type="number" name="id_update" min="1" placeholder="Id" required class="form-control">
-                </div>
-                <button type="submit" class="btn btn-info btn-block">Buscar registro</button>
             </form>
         </div>
     </div>

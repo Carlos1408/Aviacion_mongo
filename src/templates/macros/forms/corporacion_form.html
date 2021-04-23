@@ -1,0 +1,11 @@
+{% macro render_corporacion_form() %}
+<div class="form-group">
+    <input type="text" name="nombre_corporacion" placeholder="Nombre" required class="form-control">
+</div>
+<div class="form-group">
+    <input type="text" name="direccion" placeholder="Direccion" required class="form-control">
+</div>
+<div class="form-group">
+    <input type="number" name="telefono" min="1" placeholder="Telefono" required class="form-control">
+</div>
+{% endmacro %}
