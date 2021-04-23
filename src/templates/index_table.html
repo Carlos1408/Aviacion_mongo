@@ -9,7 +9,7 @@
 <div class="row pt-4">
     <div class="col-md-6 offset-md-3">
         <div class="card card-body">
-            <form action="/update/{{ schema_name }}/{{ table_name }}" method="POST">
+            <form action="/update/{{ table_name }}" method="POST">
                 <div class="form-row form-group">
                     <div class="col">
                     <input type="text" name="data" placeholder="Id" required class="form-control">
@@ -30,7 +30,7 @@
 </div>
 <div class="container pt-4">
     <div class="col-md-8 offset-md-2">
-        {{ print_data_table(fields, table) }}
+        {{ print_data_table(fields, table, schema_name, table_name) }}
     </div>
 </div>
 {% endblock %}

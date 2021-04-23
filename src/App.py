@@ -17,12 +17,6 @@ def index_table(schema, table):
                                                         WHERE table_schema = '{schema}'
                                                         AND table_name = '{table}'""")
     data = bd.select_all(f"{schema}.{table}")
-    # print(schema)
-    # data_structs.table['schema'] = schema
-    # data_structs.table['table_name'] = table
-    # data_structs.table['fields'] = data_fields
-    # data_structs.table['data'] = data
-    # print(data_structs.table)
     return render_template('index_table.html',
                             table = data,
                             fields = data_fields,
@@ -144,108 +138,128 @@ def add_servicio():
         return redirect('/index-table/per/servicio')
 
 # UPDATE CLASE_HANGAR
-@app.route("/form-clase-hangar", methods = ['POST'])
-def form_update_clase_hangar():
-    num_hangar = request.form['num_hangar_update']
-    data_fields = ('Numero de hangar', 'Capacidad')
-    data = bd.select_row("eq.clase_hangar", f"num_hangar = {num_hangar}")
-    try:
-        return render_template('updates/clase_hangar.html', table = data, fields = data_fields)
-    except:
-        return redirect(url_for("hangares"))
-
-@app.route("/update-clase_hangar/<num_hangar>", methods = ['GET, POST'])
+@app.route("/update-clase_hangar/<num_hangar>", methods = ['GET', 'POST'])
 def update_clase_hangar(num_hangar):
     if request.method == 'GET':
         print('UPDATE GET')
+        return render_template('./updates/clase_hangar.html', num_hangar = num_hangar)
     elif request.method == 'POST':
+        # num_hangar = request.form['num_hangar']
+        # capacidad = request.form['capacidad']
         print('UPDATE POST')
-    # capacidad = request.form['capacidad']
-    # query = f"update eq.clase_hangar set capacidad = {capacidad} where num_hangar = {num_hangar}"
-    # bd.execute_query(query)
-    # bd.update_clase_hangar(num_hangar, capacidad)
-    # print(num_hangar, capacidad)
-    return redirect(url_for("hangares"))
+        # print(num_hangar, capacidad)
+        return redirect('/index-table/eq/clase_hangar')
+
 
 # UPDATE CORPORACION
-@app.route("/form-corporacion", methods = ['POST'])
-def form_update_corporacion():
-    nombre = request.form['nombre_update']
-    data_fields = ('Nombre', 'Direccion', 'Telefono')
-    data = bd.select_row("prop.corporacion", f"nombre = '{nombre}'")
-    try:
-        return render_template('updates/corporacion.html', table = data, fields = data_fields)
-    except:
-        return redirect(url_for('corporacion'))
-
-@app.route("/update-corporacion/<nombre>", methods = ['POST'])
+@app.route("/update-corporacion/<nombre>", methods = ['GET', 'POST'])
 def update_corporacion(nombre):
-    direccion = request.form['direccion']
-    telefono = request.form['telefono']
-    print(nombre, direccion, telefono)
-    # query = f"update prop.corporacion set direccion = '{direccion}', telefono = {telefono} where nombre = '{nombre}'"
-    # bd.execute_query(query)
-    bd.update_corporacion(nombre, direccion, telefono)
-    return redirect(url_for("corporacion"))
+    if request.method == 'GET':
+        print('UPDATE GET')
+        return render_template('./updates/corporacion.html', nombre = nombre)
+    elif request.method == 'POST':
+        print('UPDATE POST')
+        return redirect('/index-table/prop/corporacion')
+
 
 # UPDATE PERSONA
-@app.route("/form-persona", methods = ['POST'])
-def form_update_persona():
-    id = request.form['id_update']
-    data_fields = ('Id', 'NSS', 'Nombre', 'Telefono')
-    data = bd.select_row("per.persona", f"id = {id}")
-    try:
-        return render_template('updates/persona.html', table = data, fields = data_fields)
-    except:
-        redirect(url_for('personas'))
-
-@app.route("/update-persona/<id>", methods = ['POST'])
+@app.route("/update-persona/<id>", methods = ['GET', 'POST'])
 def update_persona(id):
-    nss = request.form['nss']
-    nombre = request.form['nombre']
-    telefono = request.form['telefono']
-    # query = f"update per.persona set nss = '{nss}', nombre = '{nombre}', telefono = {telefono} where id = {id}"
-    # bd.execute_query(query)
-    bd.update_persona(id, nss, nombre, telefono)
-    return redirect(url_for("personas"))
+    if request.method == 'GET':
+        print('UPDATE GET')
+        return render_template('./updates/persona.html', id = id)
+    elif request.method == 'POST':
+        print('UPDATE POST')
+        return redirect('/index-table/per/persona')
+
 
 # UPDATE TIPO_AVION
-@app.route("/form-tipo-avion", methods = ['POST'])
-def form_update_tipo_avion():
-    id = request.form['id_update']
-    data_fields = ('Id', 'Modelo', 'Capacidad', 'Peso del avion')
-    data = bd.select_row("eq.tipo_avion", f"id = {id}")
-    try:
-        return render_template('updates/tipo_avion.html', table = data, fields = data_fields)
-    except:
-        return redirect(url_for('tipo_avion'))
-
-@app.route("/update-tipo-avion/<id>", methods = ['POST'])
+@app.route("/update-tipo_avion/<id>", methods = ['GET', 'POST'])
 def update_tipo_avion(id):
-    modelo = request.form['modelo']
-    capacidad = request.form['capacidad']
-    peso = request.form['peso']
-    # query = f"update eq.tipo_avion set modelo = '{modelo}', capacidad = {capacidad}, peso_avion = {peso} where id = {id}"
-    # bd.execute_query(query)
-    bd.update_tipo_avion(id, modelo, capacidad, peso)
-    return redirect(url_for("tipo_avion"))
+    if request.method == 'GET':
+        print('UPDATE GET')
+        return render_template('./updates/tipo_avion.html', id = id)
+    elif request.method == 'POST':
+        print('UPDATE POST')
+        return redirect('/index-table/eq/tipo_avion')
 
-@app.route("/update/<schema>/<table>", methods = ['POST'])
-def update(schema, table):
-    print('schema: ', schema)
-    print('tabla: ', table)
+
+# UPDATE AVION
+@app.route("/update-avion/<matricula>", methods = ['GET', 'POST'])
+def update_avion(matricula):
+    if request.method == 'GET':
+        print('UPDATE GET')
+        data_num_hangar = bd.select_fields("num_hangar", "eq.clase_hangar order by num_hangar")
+        data_piloto = bd.execute_query_returning_table("""select pi.num_lic, pe.nombre from eq.piloto pi
+                                                        inner join per.persona pe on pi.id = pe.id""")
+        data_corporacion = bd.select_fields("nombre", "prop.corporacion")
+        data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
+        return render_template('register_forms/avion.html',
+                                table_num_hangar = data_num_hangar,
+                                table_piloto = data_piloto,
+                                table_corporacion = data_corporacion,
+                                table_tipo_avion = data_tipo_avion,
+                                matricula = matricula)
+    elif request.method == 'POST':
+        print('UPDATE POST')
+        return redirect('/index-table/eq/avion')
+
+
+# UPDATE EMPLEADO
+@app.route("/update-empleados/<id>", methods = ['GET', 'POST'])
+def update_empleado(id):
+    if request.method == 'GET':
+        print('UPDATE GET')
+        data_tipo_servicio = bd.select_fields('tipo_servicio', 'per.servicio')
+        return render_template('updates/empleado.html',
+                                table_tipo_servicio = data_tipo_servicio,
+                                id = id)
+    elif request.method == 'POST':
+        print('UPDATE POST')
+        return redirect('/index-table/per/empleados')
+
+
+# UPDATE PILOTO
+@app.route("/update-piloto/<id>", methods = ['GET', 'POST'])
+def update_piloto(id):
+    if request.method == 'GET':
+        print('UPDATE GET')
+        return render_template('./updates/piloto.html', id = id)
+    elif request.method == 'POST':
+        print('UPDATE POST')
+        return redirect('/index-table/eq/piloto')
+
+
+# UPDATE SERVICIO
+@app.route("/update-servicio/<tipo_servicio>", methods = ['GET', 'POST'])
+def update_servicio(tipo_servicio):
+    if request.method == 'GET':
+        print('UPDATE GET')
+        data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
+        return render_template('register_forms/servicio.html',
+                                table_tipo_avion = data_tipo_avion,
+                                tipo_servicio = tipo_servicio)
+    elif request.method == 'POST':
+        print('UPDATE POST')
+        return redirect('/index-table/eq/piloto')
+
+# UPDATE REDIRECCION A FORMULARIOS
+@app.route("/update/<table>", methods = ['POST'])
+def update(table):
     data = request.form['data']
+    print('tabla: ', table)
     print('data: ', data)
-    # return redirect(f"/index-table/{schema}/{table}")
+    print('primary key: ', data_structs.pk[table] if not None else 'None')
+    print(f"/update/{table}/{data}")
     return redirect(f"/update-{table}/{data}")
+    # return render_template(f"./updates/{table}.html")
 
-# DELETE ROW
-@app.route('/delete_row/<table>/<field>/<data>/<url>')
-def delete_row(table, field, data, url):
-    print(table, field, data, url)
-    print(table, f"{field} = '{data}'")
-    bd.delete_row(table, f"{field} = '{data}'")
-    return redirect(url_for(url))
+# DELETE
+@app.route("/delete/<schema>/<table>/<field>/<reg>")
+def delete(schema, table, field, reg):
+    query = f"delete from {schema}.{table} where {field} = '{reg}'"
+    print(query)
+    return redirect(f"/index-table/{schema}/{table}")
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)

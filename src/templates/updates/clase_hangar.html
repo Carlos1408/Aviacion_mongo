@@ -1,33 +1,26 @@
 {% extends 'layout.html' %}
+{% from './macros/forms/hangar_form.html' import render_hangar_form %}
 {% from "macros/data_table.html" import print_data_table %}
 {% block body %}
 <div class="row">
-    <div class="col-md-8 offset-md-2">
+    <div class="col-md-6 offset-md-3">
         <h1>Actualizacion hangares</h1>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-8 offset-md-2">
+    <div class="col-md-6 offset-md-3">
         <div class="card card-body">
-            <form action="/update-clase-hangar/{{table.0.0}}" method="POST">
+            <form action="/update-clase_hangar/{{ num_hangar }}" method="POST">
+
+                {{ render_hangar_form() }}
+                
                 <div class="form-group">
-                    <input type="number" name="capacidad" min="1" placeholder="Capadidad" value={{table.0.1}} required class="form-control">
+                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
                 </div>
-                <div class="btn-group btn-block">
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <a href="/hangar/" class="btn btn-danger">Volver</a>
+                <div class="form-group">
+                    <a href="/index-table/eq/clase_hangar" class="btn btn-danger btn-block">Volver</a>
                 </div>
             </form>
-        </div>
-        <div class="card card-body">
-            <form action="/delete_row/eq.clase_hangar/num_hangar/{{table.0.0}}/hangares">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-info btn-block">Eliminar registro</button>
-                </div>
-            </form>
-        </div>
-        <div>
-            {{ print_data_table(fields, table) }}
         </div>
     </div>
 </div>
