@@ -129,3 +129,14 @@ class DataBase:
         cursor.execute(f"select eq.sp_update_tipo_avion({id}, '{modelo}', {capacidad}, {peso_avion})")
         self.conexion.commit()
         cursor.close()
+
+    def select_fields_names(self, schema, table):
+        cursor = self.conexion.cursor()
+        cursor.execute(f"""SELECT column_name
+                            FROM information_schema.columns
+                            WHERE table_schema = '{schema}'
+                            AND table_name = '{table}'""")
+        data = deepcopy(cursor.fetchall())
+        self.conexion.commit()
+        cursor.close()
+        return data

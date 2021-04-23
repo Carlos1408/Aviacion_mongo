@@ -1,13 +1,11 @@
-{% macro print_data_table(fields, table, schema_name, table_name, show_operations) %}
+{% macro print_data_table(fields, table, schema_name, table_name) %}
     <table class="table table-striped table-bordered table-sm table-hover">
         <thead class="bg-dark">
             <tr>
                 {% for field in fields %}
                 <td>{{field.0.capitalize().replace('_', ' ')}}</td>
                 {% endfor %}
-                {% if show_operations == 'true' %}
                 <td>Operaciones</td>
-                {% endif %}
             </tr>
         </thead>
         <body>
@@ -16,14 +14,34 @@
                 {% for cell in row %}
                 <td>{{cell}}</td>
                 {% endfor %}
-                {% if show_operations == 'true' %}
                 <td>
                     <a href="/update-{{ table_name }}/{{ row.0 }}" class="btn btn-info btn-sm">Editar</a>
                     <a href="/delete/{{ schema_name }}/{{ table_name }}/{{ fields.0.0 }}/{{ row.0 }}" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
-                {% endif %}
             </tr>
             {% endfor %}
         </body>
     </table>
+{% endmacro %}
+
+{% macro print_data_table_no_operable(fields, table, table_name) %}
+<h3>{{ table_name }}</h3>
+<table class="table table-striped table-bordered table-sm table-hover">
+    <thead class="bg-dark">
+        <tr>
+            {% for field in fields %}
+            <td>{{field.0.capitalize().replace('_', ' ')}}</td>
+            {% endfor %}
+        </tr>
+    </thead>
+    <body>
+        {% for row in table %}
+        <tr>
+            {% for cell in row %}
+            <td>{{cell}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </body>
+</table>
 {% endmacro %}
