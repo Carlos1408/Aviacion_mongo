@@ -12,10 +12,6 @@ def index():
 
 @app.route('/index-table/<schema>/<table>')
 def index_table(schema, table):
-    # data_fields = bd.execute_query_returning_table(f"""SELECT column_name
-    #                                                     FROM information_schema.columns
-    #                                                     WHERE table_schema = '{schema}'
-    #                                                     AND table_name = '{table}'""")
     data_fields = bd.select_fields_names(schema, table)
     data = bd.select_all(f"{schema}.{table}")
     return render_template('index_table.html',

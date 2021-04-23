@@ -7,7 +7,7 @@
         <h1>Actualizacion corporacion</h1>
     </div>
 </div>
-<div class="row">
+<div class="row pt-4">
     <div class="col-md-6">
         <div class="card card-body">
             <form action="/update-corporacion/{{ nombre }}" method="POST">
@@ -15,7 +15,10 @@
                 {{ render_corporacion_form() }}
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                    <div class="btn-group btn-block">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                        <a href="/delete/prop/corporacion/nombre/{{ nombre }}" class="btn btn-info">Eliminar</a>
+                    </div>
                 </div>
                 <div class="form-group">
                     <a href="/index-table/prop/corporacion" class="btn btn-danger btn-block">Volver</a>

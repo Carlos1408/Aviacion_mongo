@@ -7,7 +7,7 @@
         <h1>Actualizacion servicio</h1>
     </div>
 </div>
-<div class="row">
+<div class="row pt-4">
     <div class="col-md-6">
         <div class="card card-body">
             <form action="/update-servicio/{{ tipo_servicio }}" method="POST">
@@ -15,7 +15,10 @@
                 {{ render_servicio_form(table_tipo_avion) }}
                 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                    <div class="btn-group btn-block">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                        <a href="/delete/per/servicio/tipo_servicio/{{ tipo_servicio }}" class="btn btn-info">Eliminar</a>
+                    </div>
                 </div>
                 <div class="form-group">
                     <a href="/index-table/per/servicio" class="btn btn-danger btn-block">Volver</a>

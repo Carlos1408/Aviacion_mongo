@@ -7,7 +7,7 @@
         <h1>Actualizacion hangares</h1>
     </div>
 </div>
-<div class="row">
+<div class="row pt-4">
     <div class="col-md-6">
         <div class="card card-body">
             <form action="/update-clase_hangar/{{ num_hangar }}" method="POST">
@@ -15,7 +15,10 @@
                 {{ render_hangar_form() }}
                 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                    <div class="btn-group btn-block">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <a href="/delete/eq/clase_hangar/num_hangar/{{ num_hangar }}" class="btn btn-info">Eliminar</a>
+                    </div>
                 </div>
                 <div class="form-group">
                     <a href="/index-table/eq/clase_hangar" class="btn btn-danger btn-block">Volver</a>

@@ -7,7 +7,7 @@
         <h1>Actualizacion tipo avion</h1>
     </div>
 </div>
-<div class="row">
+<div class="row pt-4">
     <div class="col-md-6">
         <div class="card card-body">
             <form action="/update-tipo_avion/{{ id }}" method="POST">
@@ -15,7 +15,10 @@
                 {{ render_tipo_avion_form() }}
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                    <div class="btn-group btn-block">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                        <a href="/delete/eq/tipo_avion/id/{{ id }}" class="btn btn-info">Eliminar</a>
+                    </div>
                 </div>
                 <div class="form-group">
                     <a href="/index-table/eq/tipo_avion" class="btn btn-danger btn-block">Volver</a>
