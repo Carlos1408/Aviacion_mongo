@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from DataBase import DataBase
-import data_structs
+import Data_structs as ds
 
 bd = DataBase()
 
@@ -24,8 +24,10 @@ def index_table(schema, table):
 @app.route("/add-clase_hangar", methods = ['GET', 'POST'])
 def add_hangar():
     if request.method == 'GET':
-        print('GET')
-        return render_template('register_forms/hangar.html')
+        return render_template('index_register_form.html',
+                                table_name = 'clase_hangar',
+                                schema = 'eq',
+                                data_select = None)
     elif request.method == 'POST':
         num_hangar = request.form['num_hangar']
         capacidad = request.form['capacidad']
@@ -36,7 +38,10 @@ def add_hangar():
 @app.route("/add-persona", methods = ['GET', 'POST'])
 def add_persona():
     if request.method == 'GET':
-        return render_template('register_forms/persona.html')
+        return render_template('index_register_form.html',
+                                table_name = 'persona',
+                                schema = 'per',
+                                data_select = None)
     elif request.method == 'POST':
         nss = request.form['nss']
         nombre = request.form['nombre']
@@ -56,9 +61,10 @@ def add_persona():
 @app.route("/add-empleados", methods = ['GET', 'POST'])
 def add_empleado():
     if request.method == 'GET':
-        data_tipo_servicio = bd.select_fields('tipo_servicio', 'per.servicio')
-        return render_template('register_forms/empleado.html',
-                                table_tipo_servicio = data_tipo_servicio)
+        return render_template('index_register_form.html',
+                                table_name = 'empleados',
+                                schema = 'per',
+                                data_select = ds.data_select)
     elif request.method == 'POST':
         salario = request.form['salario']
         turno = request.form['turno']
@@ -70,7 +76,10 @@ def add_empleado():
 @app.route("/add-piloto", methods = ['GET', 'POST'])
 def add_piloto():
     if request.method == 'GET':
-        return render_template('register_forms/piloto.html')
+        return render_template('index_register_form.html',
+                                table_name = 'piloto',
+                                schema = 'eq',
+                                data_select = None)
     elif request.method == 'POST':
         num_lic = request.form['num_lic']
         print(num_lic)
@@ -80,7 +89,10 @@ def add_piloto():
 @app.route("/add-corporacion", methods = ['GET', 'POST'])
 def add_corporacion():
     if request.method == 'GET':
-        return render_template('register_forms/corporacion.html')
+        return render_template('index_register_form.html',
+                                table_name = 'corporacion',
+                                schema = 'prop',
+                                data_select = None)
     elif request.method == 'POST':
         nombre = request.form['nombre_corporacion']
         direccion = request.form['direccion']
@@ -91,16 +103,10 @@ def add_corporacion():
 @app.route("/add-avion", methods = ['GET', 'POST'])
 def add_avion():
     if request.method == 'GET':
-        data_num_hangar = bd.select_fields("num_hangar", "eq.clase_hangar order by num_hangar")
-        data_piloto = bd.execute_query_returning_table("""select pi.num_lic, pe.nombre from eq.piloto pi
-                                                        inner join per.persona pe on pi.id = pe.id""")
-        data_corporacion = bd.select_fields("nombre", "prop.corporacion")
-        data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
-        return render_template('register_forms/avion.html',
-                                table_num_hangar = data_num_hangar,
-                                table_piloto = data_piloto,
-                                table_corporacion = data_corporacion,
-                                table_tipo_avion = data_tipo_avion)
+        return render_template('index_register_form.html',
+                                table_name = 'avion',
+                                schema = 'eq',
+                                data_select = ds.data_select)
     elif request.method == 'POST':
         matricula = request.form['matricula']
         num_hangar = request.form['num_hangar']
@@ -114,7 +120,10 @@ def add_avion():
 @app.route("/add-tipo_avion", methods = ['GET', 'POST'])
 def add_tipo_avion():
     if request.method == 'GET':
-        return render_template('register_forms/tipo_avion.html')
+        return render_template('index_register_form.html',
+                                table_name = 'tipo_avion',
+                                schema = 'eq',
+                                data_select = None)
     elif request.method == 'POST':
         modelo = request.form['modelo']
         capacidad = request.form['capacidad']
@@ -125,8 +134,10 @@ def add_tipo_avion():
 @app.route("/add-servicio", methods = ['GET', 'POST'])
 def add_servicio():
     if request.method == 'GET':
-        data_tipo_avion = bd.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion")
-        return render_template('register_forms/servicio.html', table_tipo_avion = data_tipo_avion)
+        return render_template('index_register_form.html',
+                                table_name = 'servicio',
+                                schema = 'per',
+                                data_select = ds.data_select)
     elif request.method == 'POST':
         tipo_servicio = request.form['tipo_servicio']
         horas = request.form['horas']
