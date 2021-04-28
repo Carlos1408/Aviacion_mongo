@@ -1,32 +1,58 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <h1>Home</h1>
-        <div class="card card-body">
-            <a href="/hangar" class="btn btn-success btn-block">Hangares</a>
+    <div class="col-md-6">
+        <h1>Inicio</h1>
+    </div>
+</div>
+<div class="row pt-4">
+    <div class="col-md-5">
+        <div class="card border-primary">
+            <div class="card-header">
+                <h4 class="card-title">Personal</h4>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/per/persona" class="btn btn-primary btn-block btn-lg">Personas</a>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/per/empleados" class="btn btn-primary btn-block btn-lg">Empleado</a>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/per/servicio" class="btn btn-primary btn-block btn-lg">Servicio</a>
+            </div>
         </div>
-        <div class="card card-body">
-            <a href="/persona" class="btn btn-success btn-block">Personas</a>
+        <div class="pt-3"></div>
+        <div class="card border-primary">
+            <div class="card-header">
+                <h4 class="card-title">Propietarios</h4>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/prop/corporacion" class="btn btn-primary btn-block btn-lg">Corporacion</a>
+            </div>
         </div>
-        <div class="card card-body">
-            <a href="/empleados" class="btn btn-primary btn-block">Empleado</a>
-        </div>
-        <div class="card card-body">
-            <a href="/piloto" class="btn btn-primary btn-block">Piloto</a>
-        </div>
-        <div class="card card-body">
-            <a href="/corporacion" class="btn btn-success btn-block">Corporacion</a>
-        </div>
-        <div class="card card-body">
-            <a href="/servicio" class="btn btn-primary btn-block">Servicio</a>
-        </div>
-        <div class="card card-body">
-            <a href="/avion" class="btn btn-primary btn-block">Avion</a>
-        </div>
-        <div class="card card-body">
-            <a href="/tipo-avion" class="btn btn-success btn-block">Tipo de avion</a>
+    </div>
+
+    <div class="col-md-2"></div>
+
+    <div class="col-md-5">
+        <div class="card border-primary">
+            <div class="card-header">
+                <h4 class="card-title">Equipamiento</h4>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/eq/piloto" class="btn btn-primary btn-block btn-lg">Piloto</a>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/eq/avion" class="btn btn-primary btn-block btn-lg">Avion</a>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/eq/tipo_avion" class="btn btn-primary btn-block btn-lg">Tipo de avion</a>
+            </div>
+            <div class="card-body">
+                <a href="/index-table/eq/clase_hangar" class="btn btn-primary btn-block btn-lg">Hangares</a>
+            </div>
         </div>
     </div>
 </div>
+
 {% endblock %}

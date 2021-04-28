@@ -1,0 +1,35 @@
+{% macro render_form(table_name, data_select, default_values) %}
+    {% if table_name == 'avion' %}
+        {% from "./macros/forms/avion_form.html" import render_avion_form %}
+        {{ render_avion_form(data_select, default_values) }}
+    
+    {% elif table_name == 'corporacion' %}
+        {% from "./macros/forms/corporacion_form.html" import render_corporacion_form %}
+        {{ render_corporacion_form(default_values) }}
+    
+    {% elif table_name == 'empleados' %}
+        {% from "./macros/forms/empleado_form.html" import render_empleado_form %}
+        {{ render_empleado_form(data_select, default_values) }}
+    
+    {% elif table_name == 'clase_hangar' %}
+        {% from "./macros/forms/hangar_form.html" import render_hangar_form %}
+        {{ render_hangar_form(default_values) }}
+    
+    {% elif table_name == 'persona' %}
+        {% from "./macros/forms/persona_form.html" import render_persona_form %}
+        {{ render_persona_form(default_values) }}
+    
+    {% elif table_name == 'piloto' %}
+        {% from "./macros/forms/piloto_form.html" import render_piloto_form %}
+        {{ render_piloto_form(default_values) }}
+    
+    {% elif table_name == 'servicio' %}
+        {% from "./macros/forms/servicio_form.html" import render_servicio_form %}
+        {{ render_servicio_form(data_select, default_values) }}
+    
+    {% elif table_name == 'tipo_avion' %}
+        {% from "./macros/forms/tipo_avion_form.html" import render_tipo_avion_form %}
+        {{ render_tipo_avion_form(default_values) }}
+    
+    {% endif %}
+{% endmacro %}

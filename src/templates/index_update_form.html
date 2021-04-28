@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% from "./macros/form_manager.html" import render_form %}
+{% from "./macros/data_table.html" import print_non_operable_data_table %}
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <h1>{{ table['name'].capitalize().replace('_', ' ') }}</h1>
+    </div>
+</div>
+<div class="row pt-4">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <!-- <form action="/update-{{ table['name'] }}/{{ data }}" method="POST"> -->
+            <form action="/update_register/{{ table['schema'] }}/{{ table['name'] }}" method="POST">
+
+                {{ render_form(table['name'], data_select, default_values) }}
+
+                <div class="form-group">
+                    <div class="btn-group btn-block">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                        <a href="/delete/{{ table['schema'] }}/{{ table['name'] }}/{{ table['index'] }}/{{ data }}" class="btn btn-info">Eliminar</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a href="/index-table/{{table['schema'] }}/{{ table['name'] }}" class="btn btn-danger btn-block">Volver</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6">
+        {{ print_non_operable_data_table(table) }}
+    </div>
+    <!-- Crear macro para tablas relacion -->
+</div>
+{% endblock %}
