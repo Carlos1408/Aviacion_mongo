@@ -26,6 +26,11 @@ def index_register_form(table_name):
 @app.route('/insert_register/<schema>/<table_name>', methods = ['POST'])
 def insert_register(schema, table_name):
     get_form_data(table_name, 'insert')
+    if table_name == 'persona':
+        try:
+            return redirect(f"/index_register_form/{request.form['tipo_persona']}")
+        except:
+            pass
     return redirect(f"/index-table/{schema}/{table_name}")
     
 
