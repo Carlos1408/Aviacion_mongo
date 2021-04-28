@@ -50,6 +50,7 @@ def update(table):
     data = request.form['data']
     return redirect(f"/index_update_form/{table}/{data}")
 
+
 # DELETE
 @app.route("/delete/<schema>/<table>/<field>/<reg>")
 def delete(schema, table, field, reg):
