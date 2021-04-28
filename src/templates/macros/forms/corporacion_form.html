@@ -1,9 +1,9 @@
 {% macro render_corporacion_form(values) %}
 <div class="form-group">
     {% if values.0 == '' %}
-        <input type="text" name="nombre_corporacion" placeholder="Nombre" required class="form-control">
+        <input type="text" name="nombre" placeholder="Nombre" required class="form-control">
     {% else %}
-        <input type="text" name="nombre_corporacion" placeholder="Nombre" required class="form-control" value="{{ values.0 }}" readonly>
+        <input type="text" name="nombre" placeholder="Nombre" required class="form-control" value="{{ values.0 }}" readonly>
     {% endif %}
 </div>
 <div class="form-group">

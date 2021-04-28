@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "c:\\Users\\claur\\OneDrive\\Escritorio\\Proyectos Python\\Aviacion\\venv\\Scripts\\python.exe"
+    "python.pythonPath": "c:\\Users\\claur\\OneDrive\\Escritorio\\Proyectos Python\\Aviacion\\venv\\Scripts\\python.exe",
+    "python.formatting.provider": "black"
 }

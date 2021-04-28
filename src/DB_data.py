@@ -47,10 +47,16 @@ class DB_data:
         table['spec_row'] = self.db.select_row(f"{table['schema']}.{table['name']}", f"{table['index']} = '{index}'")
         return table
 
-    def get_data_select(self):
-        data_select = {'num_hangar' : self.db.select_fields("num_hangar", "eq.clase_hangar order by num_hangar"),
-                        'piloto' :self. db.execute_query_returning_table("select pi.num_lic, pe.nombre from eq.piloto pi inner join per.persona pe on pi.id = pe.id"),
-                        'corporacion' : self.db.select_fields("nombre", "prop.corporacion"),
-                        'tipo_avion' : self.db.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion"),
-                        'servicio' : self.db.select_fields('tipo_servicio', 'per.servicio')}
+    def get_data_select(self, table_name):
+        if table_name == 'avion' or table_name == 'empleados' or table_name == 'servicio':
+                data_select = {'num_hangar' : self.db.select_fields("num_hangar", "eq.clase_hangar order by num_hangar"),
+                                'piloto' :self. db.execute_query_returning_table("select pi.num_lic, pe.nombre from eq.piloto pi inner join per.persona pe on pi.id = pe.id"),
+                                'corporacion' : self.db.select_fields("nombre", "prop.corporacion"),
+                                'tipo_avion' : self.db.select_fields("id, modelo", "eq.tipo_avion order by tipo_avion"),
+                                'servicio' : self.db.select_fields('tipo_servicio', 'per.servicio')}
+        else:
+                data_select = None
         return data_select
+
+    def get_info(self, table_name):
+                return self.tables[table_name]

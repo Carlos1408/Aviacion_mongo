@@ -9,7 +9,8 @@
 <div class="row pt-4">
     <div class="col-md-6 offset-md-3">
         <div class="card card-body">
-            <form action="/add-{{ table['name'] }}" method="POST">
+            <!-- <form action="/add-{{ table['name'] }}" method="POST"> -->
+            <form action="/insert_register/{{ table['schema'] }}/{{ table['name'] }}" method="POST">
 
                 {{ render_form(table['name'], data_select, ['']*5) }}
 
