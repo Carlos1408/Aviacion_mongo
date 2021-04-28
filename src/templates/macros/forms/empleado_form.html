@@ -1,24 +1,35 @@
-{% macro render_empleado_form(table_tipo_servicio) %}
+{% macro render_empleado_form(data_select, values) %}
+{% set turnos = ('madrugada', 'mañana', 'tarde', 'noche') %}
+    {% if values.0 != '' %}
+        <div class="form-group">
+            <input type="number" name="id" placeholder="Id"  class="form-control" value="{{values.0}}" readonly>
+        </div>
+    {% endif %}
 <div class="form-group">
-    <input type="number" name="id" placeholder="Id generada"  class="form-control" disabled="True">
-</div>
-<div class="form-group">
-    <input type="number" name="salario" placeholder="Salario"  class="form-control" required>
+    <input type="number" name="salario" placeholder="Salario"  class="form-control" required value="{{values.1}}">
 </div>
 <div class="form-group">
     <select name="turno" class="form-control" required>
         <option selected disabled value="">Turno</option>
-        <option value="madrugada">Madrugada</option>
-        <option value="mañana">Mañana</option>
-        <option value="tarde">Tarde</option>
-        <option value="noche">Noche</option>
+        {% for row in turnos %}
+            {% if row == values.2 %}
+                <option selected value="{{row}}">{{row.capitalize()}}</option>
+            {% else %}
+                <option value="{{row}}">{{row.capitalize()}}</option>
+            {% endif %}
+        {% endfor %}
     </select>
 </div>
 <div class="form-group">
     <select name="tipo_servicio" class="form-control" required>
         <option selected disabled value="">Tipo de servicio</option>
-        {% for row in table_tipo_servicio %}
-        <option value="{{row.0}}">{{row.0}}</option>
+
+        {% for row in data_select['servicio'] %}
+            {% if row.0 == values.3 %}
+                <option selected value="{{row.0}}">{{row.0.capitalize()}}</option>
+            {% else %}
+                <option value="{{row.0}}">{{row.0.capitalize()}}</option>
+            {% endif %}
         {% endfor %}
     </select>
 </div>

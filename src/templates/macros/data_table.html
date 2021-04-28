@@ -1,22 +1,22 @@
-{% macro print_data_table(fields, table, schema_name, table_name) %}
+{% macro print_data_table(table) %}
     <table class="table table-striped table-bordered table-sm table-hover">
         <thead class="bg-dark">
             <tr>
-                {% for field in fields %}
+                {% for field in table['fields'] %}
                 <td>{{field.0.capitalize().replace('_', ' ')}}</td>
                 {% endfor %}
                 <td width="150px">Operaciones</td>
             </tr>
         </thead>
         <body>
-            {% for row in table %}
+            {% for row in table['data'] %}
             <tr>
                 {% for cell in row %}
                 <td>{{cell}}</td>
                 {% endfor %}
                 <td>
-                    <a href="/update-{{ table_name }}/{{ row.0 }}" class="btn btn-info btn-sm">Editar</a>
-                    <a href="/delete/{{ schema_name }}/{{ table_name }}/{{ fields.0.0 }}/{{ row.0 }}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="/index_update_form/{{ table['name'] }}/{{ row.0 }}" class="btn btn-info btn-sm">Editar</a>
+                    <a href="/delete/{{ table['schema'] }}/{{ table['name'] }}/{{ table['index'] }}/{{ row.0 }}" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -24,18 +24,18 @@
     </table>
 {% endmacro %}
 
-{% macro print_data_table_no_operable(fields, table, table_name) %}
-<h3>{{ table_name }}</h3>
+{% macro print_non_operable_data_table(table) %}
+<h3>{{ table['name'].capitalize().replace('_', ' ') }}</h3>
 <table class="table table-striped table-bordered table-sm table-hover">
     <thead class="bg-dark">
         <tr>
-            {% for field in fields %}
+            {% for field in table['fields'] %}
             <td>{{field.0.capitalize().replace('_', ' ')}}</td>
             {% endfor %}
         </tr>
     </thead>
     <body>
-        {% for row in table %}
+        {% for row in table['spec_row'] %}
         <tr>
             {% for cell in row %}
             <td>{{cell}}</td>

@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from DataBase import DataBase
-import Data_structs as ds
+from DB_data import DB_data
 
 bd = DataBase()
+db_data = DB_data()
 
 app = Flask(__name__)
 
@@ -12,21 +13,41 @@ def index():
 
 @app.route('/index-table/<schema>/<table>')
 def index_table(schema, table):
-    data_fields = bd.select_fields_names(schema, table)
-    data = bd.select_all(f"{schema}.{table}")
-    return render_template('index_table.html',
-                            table = data,
-                            fields = data_fields,
-                            table_name = table,
-                            schema_name = schema)
+    return render_template('index_table.html', table = db_data.get_table(table))
+
+@app.route('/index_register_form/<table_name>', methods = ['GET'])
+def index_register_form(table_name):
+    if table_name == 'avion' or table_name == 'empleados' or table_name == 'servicio':
+        return render_template('index_register_form.html',
+                                table = db_data.get_table(table_name),
+                                data_select = db_data.get_data_select())
+    else:
+        return render_template('index_register_form.html',
+                                table = db_data.get_table(table_name),
+                                data_select = None)
+    
+@app.route('/index_update_form/<table_name>/<data>')
+def index_update_form(table_name, data):
+    table = db_data.get_table_with_spec_row(table_name, data)
+    if table_name == 'avion' or table_name == 'empleados' or table_name == 'servicio':
+        return render_template('index_update_form.html',
+                                table = table,
+                                data_select = db_data.get_data_select(),
+                                data = data,
+                                default_values = table['spec_row'][0])
+    else:
+        return render_template('index_update_form.html',
+                                table = table,
+                                data_select = None,
+                                data = data,
+                                default_values = table['spec_row'][0])
 
 # INSERT CLASE_HANGAR
 @app.route("/add-clase_hangar", methods = ['GET', 'POST'])
 def add_hangar():
     if request.method == 'GET':
         return render_template('index_register_form.html',
-                                table_name = 'clase_hangar',
-                                schema = 'eq',
+                                table = ds.table_struct['clase_hangar'],
                                 data_select = None)
     elif request.method == 'POST':
         num_hangar = request.form['num_hangar']
@@ -52,9 +73,9 @@ def add_persona():
             tipo_persona = 'persona'
         print(nss, nombre, telefono, tipo_persona)
         if tipo_persona == 'empleado':
-            return redirect(url_for("add_empleado"))
+            return redirect('/index_register_form/empleados')
         elif tipo_persona == 'piloto':
-            return redirect(url_for("add_piloto"))
+            return redirect('index_register_form/piloto')
         return redirect('/index-table/per/persona')
 
 #INSERT EMPLEADO
@@ -97,6 +118,7 @@ def add_corporacion():
         nombre = request.form['nombre_corporacion']
         direccion = request.form['direccion']
         telefono = request.form['telefono']
+        print(nombre, direccion, telefono)
         return redirect('/index-table/prop/corporacion')
 
 #INSERT AVION
@@ -157,10 +179,10 @@ def update_clase_hangar(num_hangar):
                                 table = data,
                                 table_name = 'Clase hangar')
     elif request.method == 'POST':
-        # num_hangar = request.form['num_hangar']
-        # capacidad = request.form['capacidad']
         print('UPDATE POST')
-        # print(num_hangar, capacidad)
+        num_hangar = request.form['num_hangar']
+        capacidad = request.form['capacidad']
+        print(num_hangar, capacidad)
         return redirect('/index-table/eq/clase_hangar')
 
 
@@ -286,18 +308,13 @@ def update_servicio(tipo_servicio):
                                 table_name = 'Servicio')
     elif request.method == 'POST':
         print('UPDATE POST')
-        return redirect('/index-table/eq/piloto')
+        return redirect('/index-table/per/servicio')
 
 # UPDATE REDIRECCION A FORMULARIOS
-@app.route("/update/<table>", methods = ['POST'])
+@app.route("/request-update/<table>", methods = ['POST'])
 def update(table):
     data = request.form['data']
-    print('tabla: ', table)
-    print('data: ', data)
-    print('primary key: ', data_structs.pk[table] if not None else 'None')
-    print(f"/update/{table}/{data}")
-    return redirect(f"/update-{table}/{data}")
-    # return render_template(f"./updates/{table}.html")
+    return redirect(f"/index_update_form/{table}/{data}")
 
 # DELETE
 @app.route("/delete/<schema>/<table>/<field>/<reg>")

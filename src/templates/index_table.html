@@ -3,13 +3,13 @@
 {% block body %}
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <h1>{{ table_name.capitalize().replace('_', ' ') }}</h1>
+        <h1>{{ table['name'].capitalize().replace('_', ' ') }}</h1>
     </div>
 </div>
 <div class="row pt-4">
     <div class="col-md-6 offset-md-3">
         <div class="card card-body">
-            <form action="/update/{{ table_name }}" method="POST">
+            <form action="/request-update/{{ table['name'] }}" method="POST">
                 <div class="form-row form-group">
                     <div class="col">
                     <input type="text" name="data" placeholder="Id" required class="form-control">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <a href="/add-{{ table_name }}" class="btn btn-primary btn-block">Nuevo registro</a>
+                    <a href="/index_register_form/{{ table['name'] }}" class="btn btn-primary btn-block">Nuevo registro</a>
                 </div>
                 <div class="form-group">
                     <a href="/" class="btn btn-danger btn-block">Volver</a>
@@ -30,7 +30,7 @@
 </div>
 <div class="container pt-4">
     <div class="col-md-8 offset-md-2">
-        {{ print_data_table(fields, table, schema_name, table_name) }}
+        {{ print_data_table(table) }}
     </div>
 </div>
 {% endblock %}

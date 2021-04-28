@@ -1,58 +1,35 @@
-{% macro render_register_form(table_name, data_select) %}
-
-{% from "./macros/forms/avion_form.html" import render_avion_form %}
-{% from "./macros/forms/corporacion_form.html" import render_corporacion_form %}
-{% from "./macros/forms/empleado_form.html" import render_empleado_form %}
-{% from "./macros/forms/hangar_form.html" import render_hangar_form %}
-{% from "./macros/forms/persona_form.html" import render_persona_form %}
-{% from "./macros/forms/piloto_form.html" import render_piloto_form %}
-{% from "./macros/forms/servicio_form.html" import render_servicio_form %}
-{% from "./macros/forms/tipo_avion_form.html" import render_tipo_avion_form %}
-
+{% macro render_form(table_name, data_select, default_values) %}
     {% if table_name == 'avion' %}
-        {% set table_num_hangar = data_select['num_hangar'] %}
-        {% set table_piloto = data_select['piloto'] %}
-        {% set table_corporacion = data_select['corporacion'] %}
-        {% set table_tipo_avion = data_select['tipo_avion'] %}
-        {{ render_avion_form(table_num_hangar, table_piloto, table_corporacion, table_tipo_avion) }}
+        {% from "./macros/forms/avion_form.html" import render_avion_form %}
+        {{ render_avion_form(data_select, default_values) }}
+    
+    {% elif table_name == 'corporacion' %}
+        {% from "./macros/forms/corporacion_form.html" import render_corporacion_form %}
+        {{ render_corporacion_form(default_values) }}
+    
+    {% elif table_name == 'empleados' %}
+        {% from "./macros/forms/empleado_form.html" import render_empleado_form %}
+        {{ render_empleado_form(data_select, default_values) }}
+    
+    {% elif table_name == 'clase_hangar' %}
+        {% from "./macros/forms/hangar_form.html" import render_hangar_form %}
+        {{ render_hangar_form(default_values) }}
+    
+    {% elif table_name == 'persona' %}
+        {% from "./macros/forms/persona_form.html" import render_persona_form %}
+        {{ render_persona_form(default_values) }}
+    
+    {% elif table_name == 'piloto' %}
+        {% from "./macros/forms/piloto_form.html" import render_piloto_form %}
+        {{ render_piloto_form(default_values) }}
+    
+    {% elif table_name == 'servicio' %}
+        {% from "./macros/forms/servicio_form.html" import render_servicio_form %}
+        {{ render_servicio_form(data_select, default_values) }}
+    
+    {% elif table_name == 'tipo_avion' %}
+        {% from "./macros/forms/tipo_avion_form.html" import render_tipo_avion_form %}
+        {{ render_tipo_avion_form(default_values) }}
+    
     {% endif %}
-
-    {% if table_name == 'corporacion' %}
-        {{ render_corporacion_form() }}
-    {% endif %}
-
-    {% if table_name == 'empleados' %}
-        {% set table_tipo_servicio = data_select['servicio'] %}
-        {{ render_empleado_form(table_tipo_servicio) }}
-    {% endif %}
-
-    {% if table_name == 'clase_hangar' %}
-        {{ render_hangar_form() }}
-    {% endif %}
-
-    {% if table_name == 'persona' %}
-        {{ render_persona_form() }}
-        <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
-            <label class="btn btn-outline-light">
-                <input type="radio" name="tipo_persona" id="option2" autocomplete="off" value="empleado"> Empleado
-            </label>
-            <label class="btn btn-outline-light">
-                <input type="radio" name="tipo_persona" id="option3" autocomplete="off" value="piloto"> Piloto
-            </label>
-        </div>
-    {% endif %}
-
-    {% if table_name == 'piloto' %}
-        {{ render_piloto_form() }}
-    {% endif %}
-
-    {% if table_name == 'servicio' %}
-        {% set table_tipo_avion = data_select['tipo_avion'] %}
-        {{ render_servicio_form(table_tipo_avion) }}
-    {% endif %}
-
-    {% if table_name == 'tipo_avion' %}
-        {{ render_tipo_avion_form() }}
-    {% endif %}
-
 {% endmacro %}
