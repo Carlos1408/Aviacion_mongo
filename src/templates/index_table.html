@@ -12,7 +12,7 @@
             <form action="/request-update/{{ table['name'] }}" method="POST">
                 <div class="form-row form-group">
                     <div class="col">
-                    <input type="text" name="data" placeholder="Id" required class="form-control">
+                    <input type="text" name="data" placeholder="{{ table['index'].capitalize().replace('_', ' ') }}" required class="form-control">
                     </div>
                     <div class="col">
                         <button type="submit" class="btn btn-info btn-block">Buscar registro</button>
