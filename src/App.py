@@ -26,7 +26,7 @@ def index_register_form(table_name):
 @app.route('/insert_register/<schema>/<table_name>', methods = ['POST'])
 def insert_register(schema, table_name):
     form_data = get_form_data(table_name, 'insert')
-    print(form_data)
+    bd.insert_reg(db_data.get_info(table_name), str(form_data))
     if table_name == 'persona':
         try:
             return redirect(f"/index_register_form/persona_{request.form['tipo_persona']}")
@@ -47,8 +47,8 @@ def index_update_form(table_name, data):
 
 @app.route('/update_register/<schema>/<table_name>/<data>', methods = ['POST'])
 def update_register(schema, table_name, data):
-    form_data = [data] + get_form_data(table_name, 'update')
-    print(form_data)
+    form_data = tuple(data) + get_form_data(table_name, 'update')
+    bd.update_reg(db_data.get_info(table_name), form_data)
     return redirect(f"/index-table/{schema}/{table_name}")
 
 # UPDATE REDIRECCION A FORMULARIOS
@@ -61,8 +61,8 @@ def update(table):
 # DELETE
 @app.route("/delete/<schema>/<table>/<field>/<reg>")
 def delete(schema, table, field, reg):
-    query = f"delete from {schema}.{table} where {field} = '{reg}'"
-    print(query)
+    value = str(tuple(reg)).replace(',', '')
+    bd.delete_reg(db_data.get_info(table), value)
     return redirect(f"/index-table/{schema}/{table}")
 
 def get_form_data(table_name, operation):
@@ -71,7 +71,7 @@ def get_form_data(table_name, operation):
     for field in bd.select_fields_names(table_info['schema'], table_info['name']):
         if (operation == 'update' and field[0] != table_info['index']) or (operation == 'insert' and (field[0] != 'id' or table_name == 'empleados' or table_name == 'piloto')):
             data.append(request.form[field[0]])
-    return data
+    return tuple(data)
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)

@@ -140,3 +140,12 @@ class DataBase:
         self.conexion.commit()
         cursor.close()
         return data
+
+    def insert_reg(self, table_info, values):
+        print(f"select {table_info['schema']}.sp_insert_{table_info['name']}{values}")
+
+    def update_reg(self, table_info, values):
+        print(f"select {table_info['schema']}.sp_update_{table_info['name']}{values}")
+
+    def delete_reg(self, table_info, value):
+        print(f"select {table_info['schema']}.sp_delete_{table_info['name']}{value}")
