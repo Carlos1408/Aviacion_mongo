@@ -21,7 +21,7 @@
     
     {% elif table_name == 'piloto' %}
         {% from "./macros/forms/piloto_form.html" import render_piloto_form %}
-        {{ render_piloto_form(default_values) }}
+        {{ render_piloto_form(data_select, default_values) }}
     
     {% elif table_name == 'servicio' %}
         {% from "./macros/forms/servicio_form.html" import render_servicio_form %}

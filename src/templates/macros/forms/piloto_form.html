@@ -1,8 +1,30 @@
-{% macro render_piloto_form(values) %}
+{% macro render_piloto_form(data_select, values) %}
 {% if values.0 != '' %}
     <div class="form-group">
-        <input type="number" name="id" placeholder="Id generada" required class="form-control" value="{{values.0}}" readonly>
+        <input type="number" name="id" class="form-control" value="{{values.0}}" readonly>
     </div>
+{% else %}
+<div class="form-group">
+    {% if data_select['generated_id'] == '' %}
+    <select name="id" class="form-control" required>
+        <option selected disabled value="">Id</option>
+        {% for row in data_select['id'] %}
+        <option value="{{row.0}}">{{row.0}} {{row.1}}</option>
+        {% endfor %}}
+    </select>
+    {% else %}
+    <select name="id" class="form-control" required>
+        <option selected disabled value="">Id</option>
+        {% for row in data_select['id'] %}
+            {% if row.0 == data_select['generated_id'].0.0 %}
+                <option selected value="{{row.0}}">{{row.0}} {{row.1}}</option>
+            {% else %}
+                <option disabled value="{{row.0}}">{{row.0}} {{row.1}}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    {% endif %}
+</div>
 {% endif %}
 <div class="form-group">
     <input type="number" name="num_lic" placeholder="Nro. de licencia" required class="form-control" value="{{values.1}}">
