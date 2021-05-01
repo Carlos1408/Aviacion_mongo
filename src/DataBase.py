@@ -163,4 +163,4 @@ class DataBase:
         cursor.close()
 
     def get_message(self):
-        return conexion.notices[-1]
+        return self.conexion.notices[-1].replace('NOTICE:  ', '')
