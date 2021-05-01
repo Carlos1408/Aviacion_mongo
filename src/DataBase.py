@@ -161,3 +161,6 @@ class DataBase:
         cursor.callproc(f"{table_info['schema']}.sp_delete_{table_info['name']}", value)
         self.conexion.commit()
         cursor.close()
+
+    def get_message(self):
+        return conexion.notices[-1]

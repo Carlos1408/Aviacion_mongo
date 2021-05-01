@@ -27,6 +27,7 @@ def index_register_form(table_name):
 def insert_register(schema, table_name):
     form_data = get_form_data(table_name, 'insert')
     bd.insert_reg(db_data.get_info(table_name), form_data)
+    flash(bd.get_message)
     if table_name == 'persona':
         try:
             return redirect(f"/index_register_form/persona_{request.form['tipo_persona']}")
@@ -49,6 +50,7 @@ def index_update_form(table_name, data):
 def update_register(schema, table_name, data):
     form_data = tuple([data]) + get_form_data(table_name, 'update')
     bd.update_reg(db_data.get_info(table_name), form_data)
+    flash(bd.get_message)
     return redirect(f"/index-table/{schema}/{table_name}")
 
 # UPDATE REDIRECCION A FORMULARIOS
