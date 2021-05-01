@@ -143,9 +143,21 @@ class DataBase:
 
     def insert_reg(self, table_info, values):
         print(f"select {table_info['schema']}.sp_insert_{table_info['name']}{values}")
+        cursor = self.conexion.cursor()
+        cursor.callproc(f"{table_info['schema']}.sp_insert_{table_info['name']}", values)
+        self.conexion.commit()
+        cursor.close()
 
     def update_reg(self, table_info, values):
         print(f"select {table_info['schema']}.sp_update_{table_info['name']}{values}")
+        cursor = self.conexion.cursor()
+        cursor.callproc(f"{table_info['schema']}.sp_update_{table_info['name']}", values)
+        self.conexion.commit()
+        cursor.close()
 
     def delete_reg(self, table_info, value):
         print(f"select {table_info['schema']}.sp_delete_{table_info['name']}{value}")
+        cursor = self.conexion.cursor()
+        cursor.callproc(f"{table_info['schema']}.sp_delete_{table_info['name']}", value)
+        self.conexion.commit()
+        cursor.close()

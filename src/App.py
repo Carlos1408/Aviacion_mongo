@@ -26,7 +26,7 @@ def index_register_form(table_name):
 @app.route('/insert_register/<schema>/<table_name>', methods = ['POST'])
 def insert_register(schema, table_name):
     form_data = get_form_data(table_name, 'insert')
-    bd.insert_reg(db_data.get_info(table_name), str(form_data))
+    bd.insert_reg(db_data.get_info(table_name), form_data)
     if table_name == 'persona':
         try:
             return redirect(f"/index_register_form/persona_{request.form['tipo_persona']}")
@@ -47,7 +47,7 @@ def index_update_form(table_name, data):
 
 @app.route('/update_register/<schema>/<table_name>/<data>', methods = ['POST'])
 def update_register(schema, table_name, data):
-    form_data = tuple(data) + get_form_data(table_name, 'update')
+    form_data = tuple([data]) + get_form_data(table_name, 'update')
     bd.update_reg(db_data.get_info(table_name), form_data)
     return redirect(f"/index-table/{schema}/{table_name}")
 
@@ -61,8 +61,7 @@ def update(table):
 # DELETE
 @app.route("/delete/<schema>/<table>/<field>/<reg>")
 def delete(schema, table, field, reg):
-    value = str(tuple(reg)).replace(',', '')
-    bd.delete_reg(db_data.get_info(table), value)
+    bd.delete_reg(db_data.get_info(table), tuple([reg]))
     return redirect(f"/index-table/{schema}/{table}")
 
 def get_form_data(table_name, operation):
