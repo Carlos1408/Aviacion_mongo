@@ -46,6 +46,16 @@ class DB_data:
         table['data'] = self.db.select_all(f"{table['schema']}.{table['name']} order by {table['index']}")
         return table
 
+    def get_table_rows(self, table_name, field, data):
+        table = self.tables[table_name]
+        table['fields'] = self.db.select_fields_names(table['schema'], table['name'])
+        try:
+                table['data'] = self.db.execute_query_returning_table(f"select * from {table['schema']}.{table['name']} where {field} like '%{data}%' order by {table['index']}")
+        except:
+                self.db.execute_query('rollback')
+                table['data'] = self.db.execute_query_returning_table(f"select * from {table['schema']}.{table['name']} where {field} = '{data}' order by {table['index']}")
+        return table
+
     def get_table_with_spec_row(self, table_name, index):
         table = self.get_table(table_name)
         table['spec_row'] = self.db.select_row(f"{table['schema']}.{table['name']}", f"{table['index']} = '{index}'")

@@ -12,9 +12,18 @@ app.secret_key = "mysecretkey"
 def index():
     return render_template('index.html')
 
-@app.route('/index-table/<schema>/<table>')
+@app.route('/index-table/<schema>/<table>', methods = ['GET', 'POST'])
 def index_table(schema, table):
-    return render_template('index_table.html', table = db_data.get_table(table))
+    if request.method == 'GET':
+        data_table = db_data.get_table(table)
+    elif request.method == 'POST':
+        data = request.form['data']
+        field = request.form['field']
+        data_table = db_data.get_table_rows(table, field, data)
+        if not data_table['data']:
+            flash(f"ERROR: {table.capitalize().replace('_', ' ')} ({field.capitalize()}: {data}) Registro inexistente")
+            return redirect(f"/index-table/{data_table['schema']}/{data_table['name']}")
+    return render_template('index_table.html', table = data_table)
 
 
 #INSERTS
@@ -53,18 +62,6 @@ def update_register(schema, table_name, data):
     bd.update_reg(db_data.get_info(table_name), form_data)
     flash(bd.get_message())
     return redirect(f"/index-table/{schema}/{table_name}")
-
-# UPDATE REDIRECCION A FORMULARIOS
-@app.route("/request-update/<table>", methods = ['POST'])
-def update(table):
-    data = request.form['data']
-    if db_data.row_exists(table, data):
-        return redirect(f"/index_update_form/{table}/{data}")
-    else:
-        table_info = db_data.get_info(table)
-        flash(f"ERROR: {table.capitalize()} ({table_info['index'].capitalize()}: {data}) Registro inexistente")
-        return redirect(f"/index-table/{table_info['schema']}/{table}")
-
 
 # DELETE
 @app.route("/delete/<schema>/<table>/<field>/<reg>")

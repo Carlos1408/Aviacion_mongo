@@ -9,14 +9,23 @@
 <div class="row pt-4">
     <div class="col-md-6 offset-md-3">
         <div class="card card-body">
-            <form action="/request-update/{{ table['name'] }}" method="POST">
+            <form action="/index-table/{{ table['schema'] }}/{{ table['name'] }}" method="POST">
                 <div class="form-row form-group">
                     <div class="col">
-                    <input type="text" name="data" placeholder="{{ table['index'].capitalize().replace('_', ' ') }}" required class="form-control">
+                        <input type="text" name="data" placeholder="Dato buscado" required class="form-control">
                     </div>
                     <div class="col">
-                        <button type="submit" class="btn btn-info btn-block">Buscar registro</button>
+                        <select name="field" class="form-control" required>
+                            <option selected disabled value="">Campo de busqueda</option>
+                            {% for row in table['fields'] %}
+                                <option value="{{row.0}}">{{row.0.capitalize().replace('_', ' ')}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
+                </div>
+                <div class="form-group btn-group btn-block">
+                    <button type="submit" class="btn btn-outline-info">Buscar registro</button>
+                    <a class="btn btn-outline-info" href="/index-table/{{table['schema']}}/{{table['name']}}">Mostrar todo</a>
                 </div>
                 <div class="form-group">
                     <a href="/index_register_form/{{ table['name'] }}" class="btn btn-primary btn-block">Nuevo registro</a>
