@@ -78,4 +78,11 @@ class DB_data:
         return data_select
 
     def get_info(self, table_name):
-                return self.tables[table_name]
+        return self.tables[table_name]
+
+    def row_exists(self, table_name, data):
+        table = self.tables[table_name]
+        if(self.db.select_row(f"{table['schema']}.{table['name']}", f"{table['index']} = '{data}'")):
+                return True
+        else:
+                return False

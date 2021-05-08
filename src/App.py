@@ -58,7 +58,12 @@ def update_register(schema, table_name, data):
 @app.route("/request-update/<table>", methods = ['POST'])
 def update(table):
     data = request.form['data']
-    return redirect(f"/index_update_form/{table}/{data}")
+    if db_data.row_exists(table, data):
+        return redirect(f"/index_update_form/{table}/{data}")
+    else:
+        table_info = db_data.get_info(table)
+        flash(f"ERROR: {table.capitalize()} ({table_info['index'].capitalize()}: {data}) Registro inexistente")
+        return redirect(f"/index-table/{table_info['schema']}/{table}")
 
 
 # DELETE
