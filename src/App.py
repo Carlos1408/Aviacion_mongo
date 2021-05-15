@@ -19,9 +19,15 @@ def index_table(schema, table):
     elif request.method == 'POST':
         data = request.form['data']
         field = request.form['field']
-        data_table = db_data.get_table_rows(table, field, data)
-        if not data_table['data']:
-            flash(f"ERROR: {table.capitalize().replace('_', ' ')} ({field.capitalize()}: {data}) Registro inexistente")
+        try:
+            data_table = db_data.get_table_rows(table, field, data)
+            if not data_table['data']:
+                flash(f"ERROR: {table.capitalize().replace('_', ' ')} ({field.capitalize()}: {data}) Registro inexistente")
+                return redirect(f"/index-table/{data_table['schema']}/{data_table['name']}")
+        except:
+            bd.execute_query('rollback')
+            flash(f"ERROR: Error producido en la busqueda")
+            data_table = db_data.get_info(table)
             return redirect(f"/index-table/{data_table['schema']}/{data_table['name']}")
     return render_template('index_table.html', table = data_table)
 
