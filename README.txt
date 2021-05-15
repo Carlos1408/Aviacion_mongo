@@ -1,4 +1,4 @@
-Esta es la primera version de una aplicacion para la gestion de una base de datos la cual se ejecuta en el navegador
+Esta es una aplicacion para la gestion de una base de datos la cual se ejecuta en el navegador
 Los componentes usados para el desarrollo de la aplicacion son:
 
 Frontend:
@@ -11,14 +11,18 @@ Backend:
 Base de datos:
     PostgreSQL
 
-Para ejecutar la aplicacion se debe ejecutar el archivo App.py, se abre la consola de comandos y a la direccion que
-se muestra luego de inicializar el programa dar crtl+click a la direccion mostrada, seguidamente se abrira el navegador
-con la aplicacion ejecutandose.
+Se deben tener los modulos flask y psycopg2 instalados, en caso de no tenerlos ejecutar los siguientes comandos en
+la consola de comandos.
+pip install flask
+pip install psycopg2
 
-En la primera pantalla se muestran 4 botones los cuales representan las tablas de la base de datos, al dar click en uno de ellos
-nos redirige a las operaciones que se pueden hacer con la tabla, inicialmente se muestra un formulario y la tabla, en el formulario
-podemos introducir los datos que queramos insertar en latabla, para insertar los datos se da click en insertar. Si se quiere modificar
-un registro debemos ir al formulario de abajo y ahi insetar el campo de busqueda que nos pide, click en buscar. se genera otro formulario
-con los campos de el registro buscado, listos para editarse, para modificar el registro hay que dar click en Actualizar, o si se pretende
-eliminar el registro se da click en "eliminar registro" y automaticamente se eliminara el registro redirigiendonos a la pantalla anterior
-Podemos navegar entre las tablas y la pantalla inicial con los botones de "volver" o con la barra de navegacion ubicada en la parte superior
+Para ejecutar la aplicacion se debe ejecutar el archivo App.py, ubicado en la carpeta src, se abre la consola de comandos y en el
+navegador deberemos escribir la siguiente ruta: http://127.0.0.1:3000/
+
+En la pantalla principal se muestran 8 botones, los cuales nos llevaran a los datos de las tablas correspondientes.
+En la panalla de cada tabla se muestra un espacio donde podemos ingresar datos, asi mismo un campo select, este nos servira para
+buscar registros en la tabla.
+El boton "Nuevo registro" nos redirigira a un formulario donde se llenaran los datos ncesarios para ingresar un nuevo registro.
+Cada registro tiene un boton "editar" y "eliminar", los cuales nos ayudaran a realizar dichas operaciones con los registros.
+
+Repositorio de github: https://github.com/Carlos1408/Aviacion.git
