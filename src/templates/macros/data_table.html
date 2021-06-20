@@ -3,23 +3,25 @@
         <thead class="bg-dark">
             <tr>
                 {% for field in table['fields'] %}
-                <td>{{field.0.capitalize().replace('_', ' ')}}</td>
+                <td>{{field.capitalize().replace('_', ' ')}}</td>
                 {% endfor %}
                 <td width="150px">Operaciones</td>
             </tr>
         </thead>
         <body>
+
             {% for row in table['data'] %}
             <tr>
-                {% for cell in row %}
-                <td>{{cell}}</td>
+                {% for field in table['fields'] %}
+                <td>{{row[field]}}</td>
                 {% endfor %}
                 <td>
-                    <a href="/index_update_form/{{ table['name'] }}/{{ row.0 }}" class="btn btn-info btn-sm">Editar</a>
-                    <a href="/delete/{{ table['schema'] }}/{{ table['name'] }}/{{ table['index'] }}/{{ row.0 }}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="/index_update_form/{{ table['name'] }}/{{ row[table['index']] }}" class="btn btn-info btn-sm">Editar</a>
+                    <a href="/delete/{{ table['name'] }}/{{ table['index'] }}/{{ row[table['index']] }}" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
+            
         </body>
     </table>
 {% endmacro %}
