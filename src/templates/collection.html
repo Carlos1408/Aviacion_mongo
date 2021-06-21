@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% from "./macros/form_manager.html" import render_form %}
+{% from "./macros/data_table.html" import print_data_table %}
+{% block body %}
+<div class="row py-4">
+    <h2>{{ table['name'].capitalize().replace('_', ' ') }}</h2>
+</div>
+<div class="row pb-4">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <i class="fas fa-plus"></i>
+            Nuevo registro
+        </button>
+    </div>
+</div>
+
+<!-- MODAL REGISTRO -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" action="/insert/{{ table['name'] }}" method="POST">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nuevo registro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                {{ render_form(table['name'], data_select, ['']*5) }}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- ---------- -->
+
+<div class="row">
+
+    {{ print_data_table(table) }}
+
+</div>
+<div class="row">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,19 +1,21 @@
 {% macro render_piloto_form(data_select, values) %}
 {% if values.0 != '' %}
-    <div class="form-group">
+    <div class="mb-3">
+        <label for="id" class="form-label">Id</label>
         <input type="number" name="id" class="form-control" value="{{values.0}}" readonly>
     </div>
 {% else %}
-<div class="form-group">
+<div class="mb-3">
+    <label for="id" class="form-label">Id</label>
     {% if data_select['generated_id'] == '' %}
-    <select name="id" class="form-control" required>
+    <select name="id" class="form-select" required>
         <option selected disabled value="">Id</option>
         {% for row in data_select['id'] %}
         <option value="{{row.0}}">{{row.0}} {{row.1}}</option>
         {% endfor %}}
     </select>
     {% else %}
-    <select name="id" class="form-control" required>
+    <select name="id" class="form-select" required>
         <option selected disabled value="">Id</option>
         {% for row in data_select['id'] %}
             {% if row.0 == data_select['generated_id'] %}
@@ -26,7 +28,8 @@
     {% endif %}
 </div>
 {% endif %}
-<div class="form-group">
-    <input type="number" name="num_lic" placeholder="Nro. de licencia" min="1" required class="form-control" value="{{values.1}}">
+<div class="mb-3">
+    <label for="num_lic" class="form-label">Nro. de licencia</label>
+    <input type="number" name="num_lic" min="1" required class="form-control" value="{{values.1}}">
 </div>
 {% endmacro %}

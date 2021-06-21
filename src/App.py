@@ -14,16 +14,17 @@ app.secret_key = "mysecretkey"
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('landing-page.html')
 
 
-@app.route('/index-table/<collection>', methods=['GET', 'POST'])
+@app.route('/collection/<collection>', methods=['GET', 'POST'])
 def index_table(collection):
     data_table = mongo.get_info(collection)
     if request.method == 'GET':
 
         data_table['data'] = mongo.find(collection)
 
+    # Busqueda de registro
     elif request.method == 'POST':
         data = request.form['data']
         field = request.form['field']
@@ -33,15 +34,16 @@ def index_table(collection):
             pass
         try:
             data_table['data'] = mongo.find_many(collection, field, data)
-            # Editar data del documento
             if not data_table['data']:
                 flash(
                     f"ERROR: {collection.capitalize().replace('_', ' ')} ({field.capitalize()}: {data}) Registro inexistente")
-                return redirect(f"/index-table/{data_table['name']}")
+                return redirect(f"/coleccion/{data_table['name']}")
         except:
             flash(f"ERROR: Error producido en la busqueda")
             return redirect(f"/index-table/{data_table['name']}")
-    return render_template('index_table.html', table=data_table)
+    # -----
+
+    return render_template('collection.html', table=data_table, data_select = mongo.get_data_select(collection))
 
 
 # INSERTS
@@ -52,20 +54,20 @@ def index_register_form(collection):
                            data_select=mongo.get_data_select(collection))
 
 
-@app.route('/insert_register/<collection>', methods=['POST'])
-def insert_register(collection):
+@app.route('/insert/<collection>', methods=['POST'])
+def insert(collection):
     form_data = get_form_data(collection, 'insert')
     print(form_data)
     # bd.insert_reg(db_data.get_info(collection), form_data)
     flash('Exito')
     mongo.insert(collection, form_data)
     # flash(bd.get_message())
-    if collection == 'persona':
-        try:
-            return redirect(f"/index_register_form/persona_{request.form['tipo_persona']}")
-        except:
-            pass
-    return redirect(f"/index-table/{collection}")
+    # if collection == 'persona':
+    #     try:
+    #         return redirect(f"/index_register_form/persona_{request.form['tipo_persona']}")
+    #     except:
+    #         pass
+    return redirect(f"/collection/{collection}")
 
 
 # UPDATES
@@ -92,7 +94,7 @@ def update_register(schema, table_name, data):
 def delete(collection, index, value):
     mongo.remove(collection, index, value)
     # flash(bd.get_message())
-    return redirect(f"/index-table/{collection}")
+    return redirect(f"/collection/{collection}")
 
 
 def get_form_data(table_name, operation):

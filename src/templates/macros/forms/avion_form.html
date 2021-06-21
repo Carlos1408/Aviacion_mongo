@@ -1,15 +1,17 @@
 {% macro render_avion_form(data_select, values) %}
-<div class="form-group">
+<div class="mb-3">
+    <label for="matricula" class="form-label">Matricula</label>
     {% if values.0 == '' %}
-        <input type="text" name="matricula" placeholder="Matricula" class="form-control" required>
+        <input type="text" name="matricula" class="form-control" required>
     {% else %}
-        <input type="text" name="matricula" placeholder="Matricula" class="form-control" required value="{{ values.0 }}" readonly>
+        <input type="text" name="matricula" class="form-control" required value="{{ values.0 }}" readonly>
     {% endif %}
 
 </div>
-<div class="form-group">
-    <select name="num_hangar" class="form-control" required>
-        <option selected disabled value="">Numero de hangar</option>
+<div class="mb-3">
+    <label for="num_hangar" class="form-label">Numero de hangar</label>
+    <select name="num_hangar" class="form-select" required>
+        <option selected disabled value="">Seleccione una opcion</option>
 
         {% for row in data_select['num_hangar'] %}
             {% if row.0 == values.1 %}
@@ -20,8 +22,9 @@
         {% endfor %}
     </select>
 </div>
-<div class="form-group">
-    <select name="piloto" class="form-control" required>
+<div class="mb-3">
+    <label for="piloto" class="form-label">Piloto</label>
+    <select name="piloto" class="form-select" required>
         <option selected disabled value="">Piloto(licencia)</option>
 
         {% for row in data_select['piloto'] %}
@@ -33,8 +36,9 @@
         {% endfor %}
     </select>
 </div>
-<div class="form-group">
-    <select name="corporacion" class="form-control" required>
+<div class="mb-3">
+    <label for="corporacion" class="form-label">Corporacion</label>
+    <select name="corporacion" class="form-select" required>
         <option selected disabled value="">Corporacion</option>
 
         {% for row in data_select['corporacion'] %}
@@ -46,8 +50,9 @@
         {% endfor %}
     </select>
 </div>
-<div class="form-group">
-    <select name="tipo_avion" class="form-control" required>
+<div class="mb-3">
+    <label for="tipo_avion" class="form-label">Tipo de avion</label>
+    <select name="tipo_avion" class="form-select" required>
         <option selected disabled value="">Tipo de avion</option>
         
         {% for row in data_select['tipo_avion'] %}

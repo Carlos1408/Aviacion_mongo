@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Carlos Claure Vargas" />
+  <title>Aviacion</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" aria-disabled="true">Aviacion</a>
+
+    <!-- Links -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link btn btn-outline-primary" href="/">Inicio</a>
+      </li>
+
+      <!-- Personal -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle btn btn-outline-primary" href="#" id="navbardrop" data-toggle="dropdown">
+          Personal
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/index-table/persona">Persona</a>
+          <a class="dropdown-item" href="/index-table/empleados">Empleados</a>
+          <a class="dropdown-item" href="/index-table/servicio">Servicio</a>
+        </div>
+      </li>
+
+      <!-- Equipo -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle btn btn-outline-primary" href="#" id="navbardrop" data-toggle="dropdown">
+          Equipamiento
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/index-table/piloto">Piloto</a>
+          <a class="dropdown-item" href="/index-table/avion">Avion</a>
+          <a class="dropdown-item" href="/index-table/tipo_avion">Tipos de aviones</a>
+          <a class="dropdown-item" href="/index-table/clase_hangar">Hangares</a>
+        </div>
+      </li>
+
+      <!-- Propietarios -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle btn btn-outline-primary" href="#" id="navbardrop" data-toggle="dropdown">
+          Propietarios
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/index-table/corporacion">Corporacion</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <div class="container pt-4">{% block body %} {% endblock %}</div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
