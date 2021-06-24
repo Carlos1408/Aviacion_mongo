@@ -28,10 +28,10 @@
         <option selected disabled value="">Piloto(licencia)</option>
 
         {% for row in data_select['piloto'] %}
-            {% if row.0 == values.2 %}
-                <option selected value="{{row.0}}">{{row.0}} {{row.1}}</option>
+            {% if row.1 == values.2 %}
+                <option selected value="{{row.1}}">{{row.0}} {{row.1}}</option>
             {% else %}
-                <option value="{{row.0}}">{{row.0}} {{row.1}}</option>
+                <option value="{{row.1}}">{{row.0}} {{row.1}}</option>
             {% endif %}
         {% endfor %}
     </select>

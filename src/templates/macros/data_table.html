@@ -16,9 +16,12 @@
                 <td>{{row[field]}}</td>
                 {% endfor %}
                 <td>
-                    <a href="/index_update_form/{{ table['name'] }}/{{ row[table['index']] }}" class="btn btn-info">
+                    <!-- <a href="/index_update_form/{{ table['name'] }}/{{ row[table['index']] }}" class="btn btn-info">
                         <i class="fas fa-edit"></i>
-                    </a>
+                    </a> -->
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalUpdate{{(row[table['index']]|string()).replace(' ', '_')}}">
+                        <i class="fas fa-edit"></i>
+                    </button>
                     <a href="/delete/{{ table['name'] }}/{{ table['index'] }}/{{ row[table['index']] }}" class="btn btn-danger">
                         <i class="fas fa-trash-alt"></i>
                     </a>

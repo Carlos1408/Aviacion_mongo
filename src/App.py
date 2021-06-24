@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from DataBase import DataBase
 from DB_data import DB_data
 from DataBase_mongo import DataBase_mongo
+from copy import deepcopy
 
 bd = DataBase()
 db_data = DB_data()
@@ -14,7 +15,8 @@ app.secret_key = "mysecretkey"
 
 @app.route('/')
 def index():
-    return render_template('landing-page.html')
+    table = {'name':''}
+    return render_template('landing-page.html', table = table)
 
 
 @app.route('/collection/<collection>', methods=['GET', 'POST'])
@@ -22,7 +24,7 @@ def index_table(collection):
     data_table = mongo.get_info(collection)
     if request.method == 'GET':
 
-        data_table['data'] = mongo.find(collection)
+        data_table['data'] = mongo.find(collection)  # PAGINACION
 
     # Busqueda de registro
     elif request.method == 'POST':
@@ -37,59 +39,39 @@ def index_table(collection):
             if not data_table['data']:
                 flash(
                     f"ERROR: {collection.capitalize().replace('_', ' ')} ({field.capitalize()}: {data}) Registro inexistente")
-                return redirect(f"/coleccion/{data_table['name']}")
+                return redirect(f"/collection/{data_table['name']}")
         except:
             flash(f"ERROR: Error producido en la busqueda")
-            return redirect(f"/index-table/{data_table['name']}")
+            return redirect(f"/collection/{data_table['name']}")
     # -----
 
-    return render_template('collection.html', table=data_table, data_select = mongo.get_data_select(collection))
+    data_table['edit'] = mongo.enlist_collection(deepcopy(data_table['data']))
+    return render_template('collection.html', table=data_table, data_select=mongo.get_data_select(collection))
 
 
 # INSERTS
-@app.route('/index_register_form/<collection>', methods=['GET'])
-def index_register_form(collection):
-    return render_template('index_register_form.html',
-                           table=mongo.get_info(collection),
-                           data_select=mongo.get_data_select(collection))
-
-
 @app.route('/insert/<collection>', methods=['POST'])
 def insert(collection):
     form_data = get_form_data(collection, 'insert')
-    print(form_data)
-    # bd.insert_reg(db_data.get_info(collection), form_data)
     flash('Exito')
     mongo.insert(collection, form_data)
-    # flash(bd.get_message())
-    # if collection == 'persona':
-    #     try:
-    #         return redirect(f"/index_register_form/persona_{request.form['tipo_persona']}")
-    #     except:
-    #         pass
     return redirect(f"/collection/{collection}")
 
 
 # UPDATES
-@app.route('/index_update_form/<table_name>/<data>', methods=['GET'])
-def index_update_form(table_name, data):
-    table = db_data.get_table_with_spec_row(table_name, data)
-    return render_template('index_update_form.html',
-                           table=table,
-                           data_select=db_data.get_data_select(table_name),
-                           default_values=table['spec_row'][0],
-                           data=data)
-
-
-@app.route('/update_register/<schema>/<table_name>/<data>', methods=['POST'])
-def update_register(schema, table_name, data):
-    form_data = tuple([data]) + get_form_data(table_name, 'update')
-    bd.update_reg(db_data.get_info(table_name), form_data)
-    flash(bd.get_message())
-    return redirect(f"/index-table/{schema}/{table_name}")
+@app.route('/update/<collection>/<idx>', methods=['POST'])
+def update(collection, idx):
+    try:
+        idx = int(idx)
+    except:
+        pass
+    form_data = get_form_data(collection, 'update')
+    print(form_data)
+    mongo.update(collection, idx, form_data)
+    # flash(bd.get_message())   INSTRUCCION DE UPDATE
+    return redirect(f"/collection/{collection}")
 
 # DELETE
-
 @app.route("/delete/<collection>/<index>/<value>")
 def delete(collection, index, value):
     mongo.remove(collection, index, value)
@@ -108,8 +90,8 @@ def get_form_data(table_name, operation):
             except:
                 pass
             data.append(d)
-    return tuple(data)
+    return data
 
 
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+    app.run(port=4000, debug=True)

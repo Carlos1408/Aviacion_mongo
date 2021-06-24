@@ -1,5 +1,6 @@
 import pymongo
 from pymongo import MongoClient
+from copy import deepcopy
 
 class DataBase_mongo:
     def __init__(self):
@@ -9,29 +10,29 @@ class DataBase_mongo:
     def find(self, collection):
         idx = self.get_index(collection)
         collection = self.db[collection]
-        return collection.find().sort(idx)
+        return deepcopy(collection.find().sort(idx))
 
     def find_one(self, collection, field, value):
         collection = self.db[collection]
         data = collection.find_one({field:value})
-        return data
+        return deepcopy(data)
 
     def find_many(self, collection, field, value):
         idx = self.get_index(collection)
         collection = self.db[collection]
         data = collection.find({field:value}).sort(idx)
-        return data
+        return deepcopy(data)
 
     def get_fields(self, collection):
         collection = self.db[collection]
         data = collection.find_one()
         tags = list(data.keys())
         tags.remove('_id')
-        return tags
+        return deepcopy(tags)
 
     def get_index(self, collection):
         data = self.get_fields(collection)
-        return data[0]
+        return deepcopy(data[0])
 
     def get_info(self, collection):
         if collection == 'persona_empleados':
@@ -122,3 +123,20 @@ class DataBase_mongo:
             pass
         col = self.db[collection]
         col.delete_one({index : value})
+
+    def update(self, collection, index, values):
+         col = self.db[collection]
+         fields = self.get_fields(collection)
+         index_field = fields.pop(0)
+         query = {index_field : index}
+         values_dict = dict(zip(fields, values))
+         new_values = {'$set' : values_dict}
+         col.update_one(query, new_values)
+         pass
+
+    def enlist_collection(self, data):
+        result = list()
+        for row in data:
+            aux = tuple(row.values())
+            result.append(aux[1:])
+        return result

@@ -13,5 +13,15 @@ db = DataBase_mongo()
 # else:
 #     pprint.pprint(documents)
 
-result = db.get_field_data('persona', ('id', 'nombre', 'telefono'))
-pprint(result)
+# result = db.get_field_data('persona', ('id', 'nombre', 'telefono'))
+result = db.find('persona')
+print(type(result))
+result = tuple(result)
+print(type(result))
+for res in result:
+    pprint(res)
+print('')
+
+result = db.enlist_collection(result)
+for res in result:
+    print(res)
