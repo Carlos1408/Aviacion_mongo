@@ -58,7 +58,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <form class="modal-content" action="/update/{{ table['name'] }}/{{ row.0 }}" method="POST">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Actualizacion de registro{{row.0}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Actualizacion de registro</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -81,7 +81,7 @@
     {{ print_data_table(table) }}
 
 </div>
-<div class="row">
+<!-- <div class="row">
     <ul class="pagination">
         <li class="page-item">
             <a class="page-link" href="#" aria-label="Previous">
@@ -97,5 +97,5 @@
             </a>
         </li>
     </ul>
-</div>
+</div> -->
 {% endblock %}

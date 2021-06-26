@@ -116,7 +116,6 @@ class DataBase_mongo:
         col.insert_one(document)
     
     def remove(self, collection, index, value): 
-        # index = self.get_index(collection)
         try:
             value =int(value)
         except:
@@ -132,7 +131,6 @@ class DataBase_mongo:
          values_dict = dict(zip(fields, values))
          new_values = {'$set' : values_dict}
          col.update_one(query, new_values)
-         pass
 
     def enlist_collection(self, data):
         result = list()
