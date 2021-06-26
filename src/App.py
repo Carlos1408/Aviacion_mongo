@@ -71,11 +71,11 @@ def delete(collection, index, value):
 
 def get_form_data(table_name, operation):
     data = []
-    table_info = db_data.get_info(table_name)
-    for field in bd.select_fields_names(table_info['schema'], table_info['name']):
-        if ((operation == 'update' and field[0] != table_info['index'])
-            or (operation == 'insert' and (field[0] != 'id' or table_name == 'empleados' or table_name == 'piloto'))):
-            d = request.form[field[0]]
+    table_info = mongo.get_info(table_name)
+    for field in mongo.get_fields(table_info['name']):
+        if ((operation == 'update' and field != table_info['index'])
+            or (operation == 'insert' and (field != 'id' or table_name == 'empleados' or table_name == 'piloto'))):
+            d = request.form[field]
             try:
                 d = int(d)
             except:
@@ -85,4 +85,4 @@ def get_form_data(table_name, operation):
 
 
 if __name__ == '__main__':
-    app.run(port=4000, debug=True)
+    app.run(port=4000)
